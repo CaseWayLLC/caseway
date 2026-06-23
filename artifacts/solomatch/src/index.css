@@ -1,0 +1,278 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: hsl(var(--primary-border));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: hsl(var(--secondary-border));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: hsl(var(--muted-border));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: hsl(var(--accent-border));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: hsl(var(--destructive-border));
+
+  --color-gold: hsl(var(--gold));
+  --color-gold-foreground: hsl(var(--gold-foreground));
+
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+}
+
+:root {
+  --button-outline: rgba(0, 0, 0, 0.1);
+  --badge-outline: rgba(0, 0, 0, 0.05);
+
+  --opaque-button-border-intensity: -8;
+
+  --elevate-1: rgba(0, 0, 0, 0.03);
+  --elevate-2: rgba(0, 0, 0, 0.08);
+
+  /* Caseway Palette — modern white & gold */
+  --background: 40 20% 98%; /* clean warm white, matching the marble/gold hero */
+  --foreground: 153 30% 11%; /* very deep green/ink */
+
+  --border: 40 12% 90%;
+  --card: 0 0% 100%;
+  --card-foreground: 153 30% 11%;
+  --card-border: 40 12% 91%;
+
+  --sidebar: 42 30% 98%;
+  --sidebar-foreground: 153 36% 15%;
+  --sidebar-border: 42 20% 90%;
+  --sidebar-primary: 153 36% 25%;
+  --sidebar-primary-foreground: 42 20% 98%;
+  --sidebar-accent: 42 20% 92%;
+  --sidebar-accent-foreground: 153 36% 15%;
+  --sidebar-ring: 153 36% 25%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 153 36% 15%;
+  --popover-border: 42 20% 90%;
+
+  /* Primary: Deep forest green #214f38 ≈ 150 41% 22% */
+  --primary: 150 41% 22%;
+  --primary-foreground: 42 30% 96%;
+  --primary-border: 150 41% 16%;
+
+  /* Secondary: Soft warm sand/green */
+  --secondary: 150 15% 91%;
+  --secondary-foreground: 150 41% 22%;
+  --secondary-border: 150 15% 85%;
+
+  /* Muted: Clean light gray-warm */
+  --muted: 40 16% 95%;
+  --muted-foreground: 150 8% 42%;
+  --muted-border: 40 14% 90%;
+
+  /* Accent: Soft gold tint for highlights */
+  --accent: 40 40% 93%;
+  --accent-foreground: 153 36% 15%;
+  --accent-border: 40 40% 85%;
+
+  /* Gold: Accent gold #c89b48 — slightly richer for crisp white bg */
+  --gold: 40 55% 53%;
+  --gold-foreground: 150 41% 12%;
+
+  --destructive: 0 60% 50%;
+  --destructive-foreground: 42 20% 98%;
+  --destructive-border: 0 60% 40%;
+
+  --input: 42 15% 85%;
+  --ring: 150 41% 22%;
+  --chart-1: 150 41% 22%;
+  --chart-2: 40 62% 60%;
+  --chart-3: 200 40% 40%;
+  --chart-4: 300 40% 40%;
+  --chart-5: 50 40% 40%;
+
+  --app-font-sans: "DM Sans", sans-serif;
+  --app-font-serif: "Fraunces", serif;
+  --app-font-mono: Menlo, monospace;
+  --radius: 0.75rem;
+
+  --shadow-2xs: 0px 2px 0px 0px hsl(150 40% 15% / 0.04);
+  --shadow-xs: 0px 4px 6px -1px hsl(150 40% 15% / 0.05);
+  --shadow-sm:
+    0px 2px 0px 0px hsl(150 40% 15% / 0.04),
+    0px 4px 8px -2px hsl(150 40% 15% / 0.06);
+  --shadow:
+    0px 2px 0px 0px hsl(150 40% 15% / 0.04),
+    0px 8px 16px -4px hsl(150 40% 15% / 0.08);
+  --shadow-md:
+    0px 2px 0px 0px hsl(150 40% 15% / 0.04),
+    0px 12px 24px -6px hsl(150 40% 15% / 0.1);
+  --shadow-lg:
+    0px 2px 0px 0px hsl(150 40% 15% / 0.04),
+    0px 16px 32px -8px hsl(150 40% 15% / 0.12);
+  --shadow-xl:
+    0px 2px 0px 0px hsl(150 40% 15% / 0.04),
+    0px 24px 48px -12px hsl(150 40% 15% / 0.16);
+  --shadow-2xl: 0px 32px 64px -16px hsl(150 40% 15% / 0.2);
+}
+
+.dark {
+  --background: 153 36% 6%;
+  --foreground: 42 30% 95%;
+
+  --border: 153 36% 15%;
+  --card: 153 36% 8%;
+  --card-foreground: 42 30% 95%;
+  --card-border: 153 36% 15%;
+
+  --sidebar: 153 36% 6%;
+  --sidebar-foreground: 42 30% 95%;
+  --sidebar-border: 153 36% 15%;
+  --sidebar-primary: 40 62% 60%;
+  --sidebar-primary-foreground: 153 36% 6%;
+  --sidebar-accent: 153 36% 12%;
+  --sidebar-accent-foreground: 42 30% 95%;
+  --sidebar-ring: 40 62% 60%;
+
+  --popover: 153 36% 8%;
+  --popover-foreground: 42 30% 95%;
+  --popover-border: 153 36% 15%;
+
+  --primary: 40 62% 60%;
+  --primary-foreground: 153 36% 6%;
+  --primary-border: 40 62% 50%;
+
+  --secondary: 153 36% 12%;
+  --secondary-foreground: 42 30% 95%;
+  --secondary-border: 153 36% 18%;
+
+  --muted: 153 36% 10%;
+  --muted-foreground: 153 10% 60%;
+  --muted-border: 153 36% 15%;
+
+  --accent: 153 36% 15%;
+  --accent-foreground: 42 30% 95%;
+  --accent-border: 153 36% 20%;
+
+  --gold: 40 62% 60%;
+  --gold-foreground: 153 36% 6%;
+
+  --destructive: 0 60% 40%;
+  --destructive-foreground: 42 30% 98%;
+  --destructive-border: 0 60% 30%;
+
+  --input: 153 36% 15%;
+  --ring: 40 62% 60%;
+
+  --chart-1: 150 40% 40%;
+  --chart-2: 40 62% 60%;
+  --chart-3: 200 40% 40%;
+  --chart-4: 300 40% 40%;
+  --chart-5: 50 40% 40%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .noise-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+
+  .dark .noise-overlay {
+    mix-blend-mode: overlay;
+    opacity: 0.02;
+  }
+
+  .glass-panel {
+    @apply bg-background/80 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+}
+
+.legal-prose h2 {
+  @apply font-serif text-2xl font-medium tracking-tight text-foreground mt-10 mb-3;
+}
+
+.legal-prose p {
+  @apply text-foreground/85;
+}
+
+.legal-prose ul {
+  @apply list-disc pl-6 space-y-2 text-foreground/85;
+}
+
+.legal-prose a {
+  @apply text-primary underline underline-offset-2 hover:text-primary/80 transition-colors;
+}
+
+.legal-prose strong {
+  @apply font-semibold text-foreground;
+}
+
+.caseway-search-tooltip.leaflet-tooltip {
+  @apply font-sans text-xs font-semibold text-foreground bg-card border border-border rounded-full px-3 py-1 shadow-md;
+}
+
+.caseway-search-tooltip.leaflet-tooltip-top::before {
+  border-top-color: hsl(var(--border));
+}

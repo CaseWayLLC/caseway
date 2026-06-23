@@ -1,0 +1,139 @@
+uploads = []
+
+[[generated]]
+id = "u1Y3G72K8caDsq9EfkI-h"
+uri = "file://artifacts/solomatch/public/seed-attorneys/1.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "kb_ocpMbFjVLNOUIpDuIg"
+uri = "file://artifacts/solomatch/public/seed-attorneys/2.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "X-0KAyNgL2iXxwr4441xa"
+uri = "file://artifacts/solomatch/public/seed-attorneys/3.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ZXTH0iSGFY--RfSrP_Ykv"
+uri = "file://artifacts/solomatch/public/seed-attorneys/4.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "l4HaWHvP9LawzavScTtKh"
+uri = "file://artifacts/solomatch/public/seed-attorneys/5.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "PisygYtE-Bqmwhu1UkYyf"
+uri = "file://artifacts/solomatch/public/seed-attorneys/6.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "lTDJmH2TX1KK2bNlWRj6O"
+uri = "file://artifacts/solomatch/public/seed-attorneys/7.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "s4EUdEX01NCYuhf1CFVaG"
+uri = "file://artifacts/solomatch/public/seed-attorneys/8.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "8QpcvKNtKAfStB05ELlxg"
+uri = "file://artifacts/solomatch/public/seed-attorneys/9.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "72Fh37GXHoEF-vhntVBrs"
+uri = "file://artifacts/solomatch/public/seed-attorneys/10.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "CJYBoMxyN4Eh8PIQRotPN"
+uri = "file://artifacts/solomatch/public/seed-attorneys/11.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "U3fUC8ADsYLYkSgA7_9xl"
+uri = "file://artifacts/solomatch/public/seed-attorneys/12.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "RHEjF38OREVdRMUk7DNtQ"
+uri = "file://artifacts/solomatch/public/hero-bg.png"
+type = "image"
+title = "abstract architecture legal trust"
+
+[[generated]]
+id = "DKV-Bb-qP_TFSUAcB7iR4"
+uri = "file://artifacts/caseway-mobile/assets/images/icon.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "yWznNS5cdWh6Ubp7WJov5"
+uri = "file://artifacts/caseway-ad/public/images/headshot-1.png"
+type = "image"
+title = "Female attorney headshot"
+
+[[generated]]
+id = "8sBVUvo07aa6NW94Pvzrf"
+uri = "file://artifacts/caseway-ad/public/images/headshot-2.png"
+type = "image"
+title = "Male attorney headshot"
+
+[[generated]]
+id = "BcVmnn8VGVQ8n_yXGr2UR"
+uri = "file://artifacts/caseway-ad/public/images/headshot-3.png"
+type = "image"
+title = "Female attorney headshot 2"
+
+[[outputs]]
+id = "G8awvuVcDRrVuDj4HNqnE"
+uri = "file://marketing/Caseway-Founding-Attorney-Invitation.pdf"
+type = "pdf"
+title = "Caseway — Founding Attorney Invitation"
+
+[[outputs]]
+id = "on7Bjex9626AL1akehmj9"
+uri = "file://marketing/Caseway-Marketing-Strategy.pdf"
+type = "pdf"
+title = "Caseway — Marketing Strategy & Go-to-Market Approach"
+
+[[outputs]]
+id = "SCDy40o0nSA7rQvK3hrYa"
+uri = "file://marketing/Caseway-Onboarding-Commission-Plan.pdf"
+type = "pdf"
+title = "Caseway — Attorney Onboarding Commission Plan (Sales)"
+
+[[outputs]]
+id = "S4aYYUzbLSfSAxJXOG8uh"
+uri = "file://exports/caseway-web-flow.pdf"
+type = "pdf"
+title = "How casewayllc.com Works — Flow Diagram"
+
+[[outputs]]
+id = "ZfUv85WSYjvt-8mnMZFCU"
+uri = "file://media/caseway-walkthrough.mp4"
+type = "video"
+title = "Caseway walkthrough (smoother motion + compact search box)"
+
+[[outputs]]
+id = "rFOgtBH4k2rfAZMrSwGeN"
+uri = "file://marketing/Caseway-Sales-Representative-Agreement.pdf"
+type = "pdf"
+title = "Sales Representative Agreement (Wyoming, finalized)"

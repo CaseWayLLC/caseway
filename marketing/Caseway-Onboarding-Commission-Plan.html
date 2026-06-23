@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Caseway — Attorney Onboarding Commission Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: hsl(153 30% 11%);
+        --green: hsl(150 41% 22%);
+        --green-d: hsl(150 41% 13%);
+        --gold: hsl(40 56% 49%);
+        --gold-d: hsl(40 60% 40%);
+        --cream: hsl(40 24% 98%);
+        --muted: hsl(150 7% 40%);
+        --line: hsl(40 12% 87%);
+        --green-tint: hsl(150 20% 94%);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      @page { size: Letter; margin: 0; }
+      html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body { font-family: "Inter", sans-serif; color: var(--ink); background: #fff; }
+
+      .page {
+        width: 8.5in;
+        height: 11in;
+        padding: 0.6in 0.7in 0.5in;
+        background: var(--cream);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* letterhead */
+      .brand { display: flex; align-items: center; gap: 11px; }
+      .brand img { width: 36px; height: 36px; }
+      .brand .name {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 22px;
+        letter-spacing: -0.01em; color: var(--ink);
+      }
+      .brand .kicker {
+        margin-left: auto; font-size: 9.5px; font-weight: 600;
+        letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+      }
+      .hr { height: 1px; background: var(--line); margin: 14px 0 0; position: relative; }
+      .hr::before {
+        content: ""; position: absolute; left: 0; top: 0; width: 84px; height: 3px;
+        margin-top: -1px; background: var(--gold);
+      }
+
+      .eyebrow {
+        font-size: 10px; font-weight: 600; letter-spacing: 0.22em;
+        text-transform: uppercase; color: var(--gold-d);
+      }
+      h1 {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 31px;
+        line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); margin-top: 9px;
+      }
+      h1 .accent { color: var(--green); font-style: italic; }
+      .lead {
+        font-size: 12px; line-height: 1.55; color: var(--muted);
+        max-width: 6.4in; margin-top: 11px;
+      }
+
+      .section-label {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 10.5px;
+        letter-spacing: 0.16em; text-transform: uppercase; color: var(--green);
+        display: flex; align-items: center; gap: 10px;
+      }
+      .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+      /* hero band */
+      .hero {
+        display: flex; align-items: center; justify-content: space-between; gap: 22px;
+        background: linear-gradient(100deg, var(--green), var(--green-d));
+        color: hsl(42 30% 95%); border-radius: 13px; padding: 18px 26px; margin-top: 22px;
+      }
+      .hero .lab {
+        font-size: 9.5px; font-weight: 700; letter-spacing: 0.18em;
+        text-transform: uppercase; color: hsl(40 62% 66%);
+      }
+      .hero .big {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 30px;
+        line-height: 1.02; margin-top: 6px;
+      }
+      .hero .big span {
+        font-family: "Inter", sans-serif; font-size: 12px; font-weight: 500;
+        color: hsl(42 22% 84%);
+      }
+      .hero-sub {
+        font-size: 11px; line-height: 1.5; color: hsl(42 22% 86%);
+        max-width: 2.9in; text-align: right;
+      }
+      .hero-sub b { color: hsl(40 62% 66%); font-weight: 600; }
+
+      /* two-column block */
+      .cols { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 22px; margin-top: 22px; }
+
+      /* tier table */
+      table { width: 100%; border-collapse: collapse; margin-top: 13px; }
+      th {
+        text-align: left; font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--muted);
+        padding: 0 0 7px; border-bottom: 1px solid var(--line);
+      }
+      th.r, td.r { text-align: right; }
+      td {
+        font-size: 12px; padding: 8px 0; border-bottom: 1px solid var(--line);
+        color: var(--ink);
+      }
+      td .band { font-weight: 600; }
+      td .rate { font-family: "Fraunces", serif; font-weight: 600; font-size: 14px; color: var(--green); }
+      tr:last-child td { border-bottom: none; }
+
+      .note { font-size: 9.5px; line-height: 1.45; color: var(--muted); margin-top: 9px; }
+
+      /* milestone list */
+      .miles { margin-top: 13px; display: flex; flex-direction: column; gap: 7px; }
+      .mile {
+        display: flex; align-items: center; justify-content: space-between;
+        border: 1px solid var(--line); border-radius: 9px; padding: 9px 13px; background: #fff;
+      }
+      .mile .who { font-size: 11.5px; color: var(--muted); }
+      .mile .who b { color: var(--ink); font-weight: 600; }
+      .mile .amt { font-family: "Fraunces", serif; font-weight: 600; font-size: 16px; color: var(--ink); }
+      .mile.star {
+        border: 1.5px solid var(--gold); background: hsl(40 52% 95%);
+      }
+      .mile.star .amt { color: var(--gold-d); }
+      .mile .ea { font-size: 8.5px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+      /* bottom info columns */
+      .info { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 24px; }
+      .info h4 {
+        font-family: "Fraunces", serif; font-size: 12.5px; font-weight: 600;
+        color: var(--ink); margin-bottom: 9px;
+      }
+      .info ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+      .info li {
+        font-size: 10.5px; line-height: 1.45; color: var(--muted);
+        padding-left: 15px; position: relative;
+      }
+      .info li::before {
+        content: ""; position: absolute; left: 0; top: 6px; width: 5px; height: 5px;
+        border-radius: 50%; background: var(--gold);
+      }
+      .info li b { color: var(--ink); font-weight: 600; }
+
+      .spacer { flex: 1; }
+      .foot {
+        display: flex; align-items: center; justify-content: space-between;
+        font-size: 9.5px; letter-spacing: 0.06em; color: var(--muted);
+        padding-top: 13px; border-top: 1px solid var(--line); margin-top: 18px;
+      }
+      .foot b { color: var(--green); font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Caseway" />
+        <span class="name">Caseway</span>
+        <span class="kicker">Sales · Attorney onboarding commissions</span>
+      </div>
+      <div class="hr"></div>
+
+      <div style="margin-top: 24px">
+        <div class="eyebrow">Tracked automatically via Rewardful</div>
+        <h1>Earn more as you <span class="accent">onboard more.</span></h1>
+        <p class="lead">
+          You earn a cash bounty for every attorney you bring onto Caseway who becomes a
+          paying listing. Your rate per attorney climbs as you scale — and once you pass a
+          tier, the higher rate applies to every attorney in that band. Every signup is
+          tied to your personal Rewardful link, so credit is automatic. Because listings
+          are billed <b>monthly</b>, each bounty is funded out of that attorney&rsquo;s
+          successive monthly payments — it accrues over several months as they clear, not
+          up front. You&rsquo;re <b>paid only when we get paid.</b>
+        </p>
+      </div>
+
+      <div class="hero">
+        <div>
+          <div class="lab">Your benchmark</div>
+          <div class="big">$5,000<span> &nbsp;for every 100 attorneys onboarded</span></div>
+        </div>
+        <div class="hero-sub">
+          A <b>cumulative, lifetime</b> figure that accrues as each attorney&rsquo;s monthly
+          payments are collected — not a monthly or up-front amount. Push past 100 and your
+          effective rate keeps rising toward <b>$65 / attorney</b>.
+        </div>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="section-label">Commission tiers</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Attorneys onboarded (cumulative)</th>
+                <th class="r">Per attorney</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="band">1 – 25</span></td><td class="r"><span class="rate">$40</span></td></tr>
+              <tr><td><span class="band">26 – 50</span></td><td class="r"><span class="rate">$48</span></td></tr>
+              <tr><td><span class="band">51 – 75</span></td><td class="r"><span class="rate">$54</span></td></tr>
+              <tr><td><span class="band">76 – 100</span></td><td class="r"><span class="rate">$58</span></td></tr>
+              <tr><td><span class="band">101 – 150</span></td><td class="r"><span class="rate">$62</span></td></tr>
+              <tr><td><span class="band">151 +</span></td><td class="r"><span class="rate">$65</span></td></tr>
+            </tbody>
+          </table>
+          <div class="note">
+            Rates are <b>marginal</b>: each band&rsquo;s rate applies only to the attorneys
+            within it. Each bounty is a <b>one-time</b> per-attorney total (not recurring)
+            that funds over successive monthly payments — at the $10/mo Founding rate a $40
+            bounty funds over roughly <b>four months</b> of retained payments. Hitting
+            exactly 100 totals <b>$5,000</b> — a $50 blended average.
+          </div>
+        </div>
+
+        <div>
+          <div class="section-label">What you&rsquo;d earn</div>
+          <div class="miles">
+            <div class="mile"><div class="who"><b>25</b> attorneys</div><div class="amt">$1,000</div></div>
+            <div class="mile"><div class="who"><b>50</b> attorneys</div><div class="amt">$2,200</div></div>
+            <div class="mile"><div class="who"><b>75</b> attorneys</div><div class="amt">$3,550</div></div>
+            <div class="mile star">
+              <div class="who"><b>100</b> attorneys <span class="ea">&nbsp;· benchmark</span></div>
+              <div class="amt">$5,000</div>
+            </div>
+            <div class="mile"><div class="who"><b>150</b> attorneys</div><div class="amt">$8,100</div></div>
+            <div class="mile"><div class="who"><b>200</b> attorneys</div><div class="amt">$11,350</div></div>
+          </div>
+          <div class="note">
+            Effective rate per attorney: <b>$50</b> at 100 &middot; <b>$54</b> at 150 &middot;
+            <b>$56.75</b> at 200.
+          </div>
+        </div>
+      </div>
+
+      <div class="info">
+        <div>
+          <h4>What counts as a qualified attorney</h4>
+          <ul>
+            <li>The attorney completes signup <b>and</b> activates a paid Caseway subscription — the bounty begins funding when their <b>first payment clears</b>, then accrues as later monthly payments collect.</li>
+            <li>Free signups that never subscribe <b>do not</b> count.</li>
+            <li><b>30-day clawback:</b> if they cancel or refund within 30 days, the bounty is reversed.</li>
+            <li>No self-referrals or duplicate accounts.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>How you get paid &mdash; Rewardful</h4>
+          <ul>
+            <li>You receive a <b>personal referral link &amp; coupon</b>; share it with attorneys you pitch.</li>
+            <li>Conversions and earnings appear in your <b>Rewardful dashboard</b> in real time.</li>
+            <li>Payouts run <b>monthly</b> via Rewardful as each attorney&rsquo;s revenue is collected — typically across several cycles, not a lump sum — after the 30-day clawback window clears.</li>
+            <li>Tiers are <b>program-to-date</b> — once reached, the rate sticks.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="foot">
+        <span>Internal — sales compensation. Figures illustrative; terms subject to change.</span>
+        <span><b>Caseway</b> — Find your way to the right attorney</span>
+      </div>
+    </section>
+  </body>
+</html>

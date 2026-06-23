@@ -1,0 +1,23 @@
+kind = "mobile"
+previewPath = "/caseway-mobile/"
+title = "Caseway Mobile"
+version = "1.0.0"
+id = "artifacts/caseway-mobile"
+router = "expo-domain"
+
+[[integratedSkills]]
+name = "expo"
+version = "1.0.0"
+
+[[services]]
+ensurePreviewReachable = "/status"
+name = "expo"
+paths = [ "/caseway-mobile/" ]
+localPort = 26170
+
+[services.development]
+run = "pnpm --filter @workspace/caseway-mobile run dev"
+
+[services.env]
+PORT = "26170"
+BASE_PATH = "/caseway-mobile/"

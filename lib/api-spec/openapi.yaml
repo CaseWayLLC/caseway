@@ -1,0 +1,2537 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: attorneys
+    description: Attorney directory operations
+  - name: analytics
+    description: Usage analytics ingestion
+  - name: admin
+    description: Admin portal operations
+  - name: Storage
+    description: Object storage upload and serving endpoints.
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /attorneys:
+    get:
+      operationId: listAttorneys
+      tags: [attorneys]
+      summary: List attorneys
+      description: Returns attorneys, optionally filtered by search text and practice area.
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Free-text search across name, firm, and location.
+        - name: name
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Substring search across attorney full name and firm name (powers the by-name typeahead).
+        - name: practiceArea
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by a single practice area slug.
+        - name: freeConsultation
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Only attorneys offering a free consultation.
+        - name: videoConferencing
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Only attorneys offering video conferencing.
+        - name: state
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by full state name (case-insensitive), e.g. "Connecticut".
+        - name: county
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by county name (case-insensitive), e.g. "Fairfield County".
+      responses:
+        "200":
+          description: A list of attorneys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attorney"
+    post:
+      operationId: createAttorney
+      tags: [attorneys]
+      summary: Create an attorney
+      description: Adds a new attorney to the directory.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttorneyInput"
+      responses:
+        "201":
+          description: Created attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/mine:
+    get:
+      operationId: listMyAttorneys
+      tags: [attorneys]
+      summary: List my attorney listings
+      description: Returns the signed-in user's own attorney listings, regardless of review status.
+      responses:
+        "200":
+          description: The signed-in user's attorney listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MyAttorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /billing/plans:
+    get:
+      operationId: getBillingPlans
+      tags: [billing]
+      summary: List subscription plans
+      description: Returns the available subscription plans and whether the discounted Founding tier still has availability.
+      responses:
+        "200":
+          description: Available plans
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingPlans"
+  /billing/confirm:
+    post:
+      operationId: confirmBilling
+      tags: [billing]
+      summary: Refresh billing status
+      description: Forces a Stripe sync and reconcile. Used after returning from Checkout, since the managed webhook only fires against the production domain.
+      responses:
+        "200":
+          description: Billing refreshed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingConfirmResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /account:
+    delete:
+      operationId: deleteOwnAccount
+      tags: [account]
+      summary: Delete my account
+      description: Permanently deletes the signed-in user's account. Cancels any active subscriptions, takes their listings down (archived), then removes the auth user. Irreversible.
+      responses:
+        "200":
+          description: Account deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeleteOwnAccountResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "502":
+          description: Could not complete deletion (billing cancel or auth removal failed)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Authentication is not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /account/billing:
+    get:
+      operationId: getAccountBillingOverview
+      tags: [account, billing]
+      summary: Billing overview across my listings
+      description: Returns a per-listing billing summary (plan, status, amount, next charge) and recent invoices/receipts aggregated across all the signed-in user's listings.
+      responses:
+        "200":
+          description: Account billing overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountBillingOverview"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/billing/checkout:
+    post:
+      operationId: createCheckoutSession
+      tags: [billing]
+      summary: Start a subscription checkout for a listing
+      description: Creates a Stripe Checkout session to subscribe an approved listing you own, which makes it publicly visible.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCheckoutSessionInput"
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckoutSession"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Listing not eligible for checkout
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/billing/portal:
+    post:
+      operationId: createBillingPortalSession
+      tags: [billing]
+      summary: Open the billing portal for a listing
+      description: Creates a Stripe billing portal session to manage or cancel a listing's subscription.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Portal session created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingPortalSession"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: No billing account yet
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/billing/upgrade-pro:
+    post:
+      operationId: upgradeListingToPro
+      tags: [billing]
+      summary: Upgrade a subscribed listing to the Pro tier
+      description: Switches an existing active subscription you own to the Pro plan (prorated). The listing must already be subscribed; new listings subscribe via checkout, then upgrade here.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Subscription upgraded to Pro
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BillingConfirmResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Listing not eligible for upgrade
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "503":
+          description: Pro plan not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}:
+    get:
+      operationId: getAttorney
+      tags: [attorneys]
+      summary: Get an attorney by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: The attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    patch:
+      operationId: updateAttorney
+      tags: [attorneys]
+      summary: Update an attorney listing you own
+      description: Updates a listing owned by the signed-in user. Editing an approved listing resets it to pending for admin re-approval.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttorneyInput"
+      responses:
+        "200":
+          description: Updated attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: deleteAttorney
+      tags: [attorneys]
+      summary: Remove an attorney listing you own
+      description: Permanently removes a listing owned by the signed-in user.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Listing removed
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/pause:
+    post:
+      operationId: setAttorneyPaused
+      tags: [attorneys]
+      summary: Pause or resume an attorney listing you own
+      description: Pauses a live listing (hiding it from the public directory) or resumes a paused one. Owner-scoped; does not require admin re-approval.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttorneyPauseInput"
+      responses:
+        "200":
+          description: Updated attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "400":
+          description: Invalid input or listing not in a pausable/resumable state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/similar:
+    get:
+      operationId: getSimilarAttorneys
+      tags: [attorneys]
+      summary: Get similar attorneys
+      description: Returns attorneys with overlapping practice areas, ranked by similarity.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Similar attorneys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attorney"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /attorneys/{id}/analytics/{days}:
+    get:
+      operationId: getAttorneyAnalytics
+      tags: [attorneys]
+      summary: Get analytics for a listing you own
+      description: Returns owner-scoped per-listing analytics (profile views, consultation clicks, website clicks) with daily totals over the requested window. Owner-scoped; a listing you do not own responds 404 (existence is not revealed).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: days
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Window length in days. Allowed values are 7, 30, or 90; other values are clamped to 30.
+      responses:
+        "200":
+          description: Listing analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AttorneyAnalytics"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /stats:
+    get:
+      operationId: getDirectoryStats
+      tags: [attorneys]
+      summary: Directory statistics
+      description: Aggregate counts used for the landing experience and discovery.
+      responses:
+        "200":
+          description: Directory statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DirectoryStats"
+  /counties:
+    get:
+      operationId: listCounties
+      tags: [attorneys]
+      summary: List counties with attorney counts
+      description: Distinct counties (with state) that have at least one approved attorney, used for SEO county landing pages and internal linking.
+      responses:
+        "200":
+          description: A list of counties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CountyCount"
+  /practice-area-counties:
+    get:
+      operationId: listPracticeAreaCounties
+      tags: [attorneys]
+      summary: List practice-area + county combinations with attorney counts
+      description: Distinct (state, county, practice area) combinations that have at least one publicly-visible attorney, used for SEO practice-area county landing pages and internal linking.
+      responses:
+        "200":
+          description: A list of practice-area county combinations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PracticeAreaCounty"
+  /events:
+    post:
+      operationId: trackEvent
+      tags: [analytics]
+      summary: Record a usage analytics event
+      description: Logs an anonymous interaction such as a search, category selection, or attorney click.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EventInput"
+      responses:
+        "201":
+          description: Event recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventAck"
+  /contact:
+    post:
+      operationId: submitContactMessage
+      tags: [contact]
+      summary: Submit a support / contact message
+      description: Public, unauthenticated. Stores a message for the admin inbox.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactMessageInput"
+      responses:
+        "201":
+          description: Message received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactAck"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      description: Authenticates an administrator and sets a signed session cookie.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "429":
+          description: Too many login attempts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      description: Clears the admin session cookie.
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+  /admin/session:
+    get:
+      operationId: getAdminSession
+      tags: [admin]
+      summary: Current admin session
+      description: Returns whether the requester has a valid admin session.
+      responses:
+        "200":
+          description: Session status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminSession"
+  /admin/applications:
+    get:
+      operationId: listAttorneyApplications
+      tags: [admin]
+      summary: List attorney applications
+      description: Returns attorney listings (optionally filtered by status) for admin review.
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filter by review status (pending, approved, paused, rejected).
+      responses:
+        "200":
+          description: Attorney applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/referrals:
+    get:
+      operationId: listReferrals
+      tags: [admin]
+      summary: Top referrers leaderboard
+      description: Returns attorneys ranked by how many approved, live listings they have referred (highest first), each with the list of referees. Admin-authenticated.
+      responses:
+        "200":
+          description: Referrers ranked by referral count (highest first).
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Referrer"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}/approve:
+    post:
+      operationId: approveAttorney
+      tags: [admin]
+      summary: Approve an attorney application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Approved attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}/reject:
+    post:
+      operationId: rejectAttorney
+      tags: [admin]
+      summary: Reject an attorney application
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Rejected attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/archived:
+    get:
+      operationId: listArchivedAttorneys
+      tags: [admin]
+      summary: List archived (soft-deleted) attorney listings
+      description: Returns attorney listings that have been archived, most recently archived first, for the admin recovery view.
+      responses:
+        "200":
+          description: Archived attorney listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}:
+    patch:
+      operationId: adminUpdateAttorney
+      tags: [admin]
+      summary: Update any attorney listing (admin)
+      description: Updates any attorney listing by id. Admin-authenticated and not owner-scoped, so it can edit listings with no owner. The listing's review status is preserved, so an approved listing stays public immediately after the edit.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttorneyInput"
+      responses:
+        "200":
+          description: Updated attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      operationId: adminDeleteAttorney
+      tags: [admin]
+      summary: Archive an attorney listing (admin)
+      description: Soft-deletes any attorney listing by id (sets archivedAt). The listing disappears from all public reads and the admin queue but can be restored. Admin-authenticated and not owner-scoped.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Archived attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}/restore:
+    post:
+      operationId: restoreAttorney
+      tags: [admin]
+      summary: Restore an archived attorney listing
+      description: Clears the archivedAt marker so the listing returns to its previous state (its review status is unchanged).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Restored attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}/permanent:
+    delete:
+      operationId: permanentlyDeleteAttorney
+      tags: [admin]
+      summary: Permanently delete an archived attorney listing
+      description: Hard-deletes a previously archived listing. Only archived listings can be permanently deleted; this cannot be undone.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Listing permanently removed
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/analytics:
+    get:
+      operationId: getAdminAnalytics
+      tags: [admin]
+      summary: Aggregated usage analytics
+      description: Returns aggregated metrics on searches, attorney interactions, and applications.
+      responses:
+        "200":
+          description: Aggregated analytics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminAnalytics"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/events:
+    get:
+      operationId: listAnalyticsEvents
+      tags: [admin]
+      summary: Recent analytics events
+      description: Returns the most recent raw analytics events for the activity feed.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+          description: Maximum number of events to return (default 100).
+      responses:
+        "200":
+          description: Recent events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AnalyticsEvent"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/demo:
+    get:
+      operationId: getDemoStatus
+      tags: [admin]
+      summary: Demo mode status
+      description: Returns whether demo mode is enabled and how many demo profiles exist.
+      responses:
+        "200":
+          description: Demo status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoStatus"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: setDemoMode
+      tags: [admin]
+      summary: Toggle demo mode
+      description: Enables or disables demo mode. Enabling generates the demo profiles if they do not yet exist.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DemoToggleInput"
+      responses:
+        "200":
+          description: Updated demo status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DemoStatus"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/demo/promote:
+    post:
+      operationId: promoteDemoAttorneys
+      tags: [admin]
+      summary: Promote demo attorneys to permanent listings
+      description: Clears the demo flag on every demo attorney so they become permanent real listings shown regardless of demo mode, and turns demo mode off. Does not delete any rows.
+      responses:
+        "200":
+          description: Promotion result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PromoteDemoResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/bulk-geocode:
+    post:
+      operationId: bulkGeocodeAttorneys
+      tags: [admin]
+      summary: Bulk-update map coordinates for several listings (admin)
+      description: Updates the latitude/longitude of multiple attorney listings at once. Coordinates are resolved client-side from each office address (the server has no geocoding key) and confirmed by the admin before saving. Only non-archived listings are updated; review status and all other fields are left untouched.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkGeocodeInput"
+      responses:
+        "200":
+          description: Bulk geocode result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BulkGeocodeResult"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /storage/uploads/request-url:
+    post:
+      tags: [Storage]
+      operationId: requestUploadUrl
+      summary: Request a presigned URL for file upload
+      description: |
+        Returns a presigned GCS URL for direct upload. The client sends JSON
+        metadata here, then uploads the file directly to the returned URL.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned upload URL generated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadUrlResponse"
+        "400":
+          description: Missing or invalid required fields.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to generate upload URL.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /storage/public-objects/{filePath}:
+    get:
+      tags: [Storage]
+      operationId: getPublicObject
+      summary: Serve a public asset from PUBLIC_OBJECT_SEARCH_PATHS
+      description: |
+        Unconditionally public — no authentication or ACL checks.
+        Searches PUBLIC_OBJECT_SEARCH_PATHS for the given file path.
+      parameters:
+        - name: filePath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Relative file path within the public search paths.
+      responses:
+        "200":
+          description: Object content streamed with correct Content-Type.
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: File not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to serve public object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /storage/objects/{objectPath}:
+    get:
+      tags: [Storage]
+      operationId: getStorageObject
+      summary: Serve an object entity from PRIVATE_OBJECT_DIR
+      description: |
+        Serves object entities uploaded via presigned URLs. These can optionally
+        be protected with authentication or ACL checks based on the use case.
+      parameters:
+        - name: objectPath
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Object path within the private object dir (e.g. `uploads/some-uuid`).
+      responses:
+        "200":
+          description: Object content streamed with correct Content-Type.
+          content:
+            "*/*":
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Object not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "500":
+          description: Failed to serve object.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /admin/attorneys/{id}/verify:
+    post:
+      operationId: verifyAttorney
+      tags: [admin]
+      summary: Set an attorney's verification status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyAttorneyInput"
+      responses:
+        "200":
+          description: Updated attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Attorney not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/attorneys/{id}/pro:
+    post:
+      operationId: setAttorneyPro
+      tags: [admin]
+      summary: Set an attorney's Pro (paid placement) status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetAttorneyProInput"
+      responses:
+        "200":
+          description: Updated attorney
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Attorney"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Attorney not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/contact-messages:
+    get:
+      operationId: listContactMessages
+      tags: [admin]
+      summary: List contact / support messages
+      responses:
+        "200":
+          description: Messages, unhandled first then newest first
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactMessage"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/contact-messages/{id}/handled:
+    post:
+      operationId: setContactMessageHandled
+      tags: [admin]
+      summary: Mark a contact message handled or unhandled
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetContactHandledInput"
+      responses:
+        "200":
+          description: Updated message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessage"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Message not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/accounts:
+    get:
+      operationId: listAccounts
+      tags: [admin]
+      summary: List attorney accounts
+      description: Returns attorney accounts (email, signup date, last sign-in, ban status) with their linked listings, newest first.
+      parameters:
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+          description: Max accounts to return (default 50, max 200).
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+          description: Number of accounts to skip, for pagination (default 0).
+      responses:
+        "200":
+          description: Attorney accounts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountsPage"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/accounts/{id}/ban:
+    post:
+      operationId: setAccountBanned
+      tags: [admin]
+      summary: Ban or unban an attorney account
+      description: Bans (suspends) or unbans an attorney account. A banned account cannot sign in; their listings are not changed and stay live until separately archived.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Supabase user id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetAccountBannedInput"
+      responses:
+        "200":
+          description: Updated account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/accounts/{id}/firm-status:
+    post:
+      operationId: setFirmStatus
+      tags: [admin]
+      summary: Approve, reject, or reset a law firm account
+      description: Sets a firm account's review status (app_metadata.firmStatus). Approving lets the firm post attorney listings that go live after payment with no per-listing review. Has no effect on solo accounts.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Supabase user id.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetFirmStatusInput"
+      responses:
+        "200":
+          description: Updated account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /admin/accounts/{id}:
+    delete:
+      operationId: deleteAccount
+      tags: [admin]
+      summary: Permanently delete an attorney account
+      description: Permanently deletes an attorney account. This cannot be undone. The account's listings are kept but their owner link is cleared.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Supabase user id.
+      responses:
+        "200":
+          description: Deletion result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountDeletionResult"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Account not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    UploadUrlRequest:
+      type: object
+      required: [name, size, contentType]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: Original file name.
+        size:
+          type: integer
+          minimum: 1
+          description: File size in bytes.
+        contentType:
+          type: string
+          minLength: 1
+          description: MIME type of the file (e.g. `image/jpeg`).
+    UploadUrlResponse:
+      type: object
+      required: [uploadURL, objectPath]
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+          description: Presigned GCS URL for PUT upload.
+        objectPath:
+          type: string
+          description: Normalized object path (e.g. `/objects/uploads/uuid`). Store this in your database.
+        metadata:
+          $ref: "#/components/schemas/UploadUrlRequest"
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    AccountListing:
+      type: object
+      required:
+        - id
+        - fullName
+        - firmName
+        - status
+        - archived
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        firmName:
+          type: string
+        status:
+          type: string
+        archived:
+          type: boolean
+          description: True if the listing is archived (soft-deleted).
+    Account:
+      type: object
+      required:
+        - id
+        - email
+        - firstName
+        - lastName
+        - imageUrl
+        - createdAt
+        - lastSignInAt
+        - banned
+        - accountType
+        - firmStatus
+        - firmName
+        - firmWebsite
+        - firmAddress
+        - firmPhone
+        - listings
+      properties:
+        id:
+          type: string
+          description: Supabase user id.
+        email:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        imageUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        lastSignInAt:
+          type: string
+          format: date-time
+          nullable: true
+        banned:
+          type: boolean
+        accountType:
+          type: string
+          enum: [solo, firm]
+          description: Account tier self-selected at signup.
+        firmStatus:
+          type: string
+          enum: [pending, approved, rejected]
+          nullable: true
+          description: Firm-account review status. Null for solo accounts; pending/approved/rejected for firm accounts.
+        firmName:
+          type: string
+          nullable: true
+          description: Firm name provided at signup (firm accounts only).
+        firmWebsite:
+          type: string
+          nullable: true
+          description: Firm website provided at signup (firm accounts only).
+        firmAddress:
+          type: string
+          nullable: true
+          description: Main office address provided at signup (firm accounts only).
+        firmPhone:
+          type: string
+          nullable: true
+          description: Main contact phone provided at signup (firm accounts only).
+        listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountListing"
+    AccountsPage:
+      type: object
+      required:
+        - accounts
+        - totalCount
+        - limit
+        - offset
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
+        totalCount:
+          type: integer
+        limit:
+          type: integer
+        offset:
+          type: integer
+    SetAccountBannedInput:
+      type: object
+      required:
+        - banned
+      properties:
+        banned:
+          type: boolean
+          description: True to ban (suspend) the account, false to unban.
+    SetFirmStatusInput:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [pending, approved, rejected]
+          description: New firm-account review status.
+    AccountDeletionResult:
+      type: object
+      required:
+        - success
+        - unlinkedListings
+      properties:
+        success:
+          type: boolean
+        unlinkedListings:
+          type: integer
+          description: Number of listings whose owner link was cleared.
+    DemoStatus:
+      type: object
+      required:
+        - enabled
+        - demoCount
+      properties:
+        enabled:
+          type: boolean
+          description: Whether demo profiles are currently shown in the directory.
+        demoCount:
+          type: integer
+          description: Number of demo profiles that exist in the database.
+    DemoToggleInput:
+      type: object
+      required:
+        - enabled
+      properties:
+        enabled:
+          type: boolean
+    PromoteDemoResult:
+      type: object
+      required:
+        - promoted
+        - enabled
+        - demoCount
+      properties:
+        promoted:
+          type: integer
+          description: Number of demo profiles promoted to permanent listings.
+        enabled:
+          type: boolean
+          description: Demo mode state after promotion (always false).
+        demoCount:
+          type: integer
+          description: Number of demo profiles remaining (always zero after promotion).
+    BulkGeocodeInput:
+      type: object
+      required:
+        - updates
+      properties:
+        updates:
+          type: array
+          minItems: 1
+          description: One entry per listing whose map pin should be corrected.
+          items:
+            type: object
+            required:
+              - id
+              - latitude
+              - longitude
+            properties:
+              id:
+                type: integer
+                description: Listing id to update.
+              latitude:
+                type: number
+                minimum: -90
+                maximum: 90
+              longitude:
+                type: number
+                minimum: -180
+                maximum: 180
+    BulkGeocodeResult:
+      type: object
+      required:
+        - updated
+      properties:
+        updated:
+          type: integer
+          description: Number of listings whose coordinates were updated.
+    Attorney:
+      type: object
+      required:
+        - id
+        - fullName
+        - firmName
+        - title
+        - photoUrl
+        - phone
+        - email
+        - bio
+        - yearsOfExperience
+        - practiceAreas
+        - jurisdictions
+        - officeAddress
+        - latitude
+        - longitude
+        - feeType
+        - offersFreeConsultation
+        - videoConferencing
+        - languages
+        - isVerified
+        - isPro
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        firmName:
+          type: string
+        title:
+          type: string
+        photoUrl:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        bio:
+          type: string
+        yearsOfExperience:
+          type: integer
+        practiceAreas:
+          type: array
+          items:
+            type: string
+        jurisdictions:
+          type: array
+          items:
+            type: string
+        officeAddress:
+          type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        calendlyUrl:
+          type: string
+          nullable: true
+        feeType:
+          type: string
+        offersFreeConsultation:
+          type: boolean
+        videoConferencing:
+          type: boolean
+        languages:
+          type: array
+          items:
+            type: string
+        websiteUrl:
+          type: ["string", "null"]
+        linkedinUrl:
+          type: ["string", "null"]
+        barNumber:
+          type: ["string", "null"]
+          description: Self-reported state bar number.
+        isVerified:
+          type: boolean
+          description: True once an admin has manually verified the attorney's bar standing.
+        isPro:
+          type: boolean
+          description: True for paid "Pro" listings, which rank above free listings in search results.
+        referralCount:
+          type: integer
+          description: Number of approved, live listings this attorney has referred. Drives the referral leaderboard and a search-ranking boost. Present on the public discovery reads (list, profile, similar); omitted on other responses.
+        termsAcceptedAt:
+          type: ["string", "null"]
+          format: date-time
+          description: When the attorney last accepted the Terms of Use (audit trail).
+        city:
+          type: ["string", "null"]
+          description: City, derived server-side from officeAddress.
+        county:
+          type: ["string", "null"]
+          description: County, derived server-side; null when the city isn't mapped.
+        state:
+          type: ["string", "null"]
+          description: Full state name, e.g. "Connecticut".
+        stateCode:
+          type: ["string", "null"]
+          description: Two-letter state code, e.g. "CT".
+        status:
+          type: string
+          description: Listing review status (pending, approved, paused, rejected).
+        archivedAt:
+          type: ["string", "null"]
+          format: date-time
+          description: When the listing was archived (soft-deleted), or null if active.
+        createdAt:
+          type: string
+          format: date-time
+    MyAttorney:
+      description: An attorney listing owned by the signed-in user, including private billing status fields not exposed on the public Attorney schema.
+      allOf:
+        - $ref: "#/components/schemas/Attorney"
+        - type: object
+          properties:
+            subscriptionStatus:
+              type: ["string", "null"]
+              description: Stripe subscription status (active, trialing, past_due, canceled, ...), or null when there is no subscription.
+            billingTier:
+              type: ["string", "null"]
+              description: Current plan tier (founding, basic, pro), or null.
+    AttorneyInput:
+      type: object
+      required:
+        - fullName
+        - firmName
+        - title
+        - photoUrl
+        - phone
+        - email
+        - bio
+        - yearsOfExperience
+        - practiceAreas
+        - jurisdictions
+        - officeAddress
+        - latitude
+        - longitude
+        - feeType
+        - offersFreeConsultation
+        - videoConferencing
+        - languages
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 120
+        firmName:
+          type: string
+          minLength: 1
+          maxLength: 200
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        photoUrl:
+          type: string
+          minLength: 1
+          maxLength: 2048
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 40
+        email:
+          type: string
+          minLength: 3
+          maxLength: 320
+        bio:
+          type: string
+          minLength: 1
+          maxLength: 5000
+        yearsOfExperience:
+          type: integer
+          minimum: 0
+          maximum: 100
+        practiceAreas:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 100
+          minItems: 1
+          maxItems: 30
+        jurisdictions:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 100
+          minItems: 1
+          maxItems: 60
+        officeAddress:
+          type: string
+          minLength: 1
+          maxLength: 300
+        latitude:
+          type: number
+          minimum: -90
+          maximum: 90
+        longitude:
+          type: number
+          minimum: -180
+          maximum: 180
+        calendlyUrl:
+          type: string
+          nullable: true
+          maxLength: 2048
+        feeType:
+          type: string
+          minLength: 1
+          maxLength: 100
+        offersFreeConsultation:
+          type: boolean
+        videoConferencing:
+          type: boolean
+        languages:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 60
+          minItems: 1
+          maxItems: 30
+        websiteUrl:
+          type: ["string", "null"]
+          maxLength: 2048
+        linkedinUrl:
+          type: ["string", "null"]
+          maxLength: 2048
+        barNumber:
+          type: ["string", "null"]
+          maxLength: 60
+          description: Self-reported state bar number.
+        referredById:
+          type: ["integer", "null"]
+          description: ID of the attorney who referred this one (captured at signup, from the referral picker). Honored only at creation; ignored on update.
+    Referrer:
+      type: object
+      required:
+        - id
+        - fullName
+        - firmName
+        - referralCount
+        - referees
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        firmName:
+          type: string
+        referralCount:
+          type: integer
+          description: Number of approved, live listings this attorney has referred.
+        referees:
+          type: array
+          items:
+            $ref: "#/components/schemas/Referee"
+    Referee:
+      type: object
+      required:
+        - id
+        - fullName
+        - firmName
+        - status
+        - createdAt
+      properties:
+        id:
+          type: integer
+        fullName:
+          type: string
+        firmName:
+          type: string
+        status:
+          type: string
+          description: The referee listing's review status (pending, approved, ...).
+        createdAt:
+          type: string
+          format: date-time
+    VerifyAttorneyInput:
+      type: object
+      required:
+        - verified
+      properties:
+        verified:
+          type: boolean
+          description: True to mark the attorney verified, false to clear verification.
+    SetAttorneyProInput:
+      type: object
+      required:
+        - pro
+      properties:
+        pro:
+          type: boolean
+          description: True to mark the listing Pro (paid placement), false to clear it.
+    Plan:
+      type: object
+      required:
+        - tier
+        - name
+        - priceId
+        - unitAmount
+        - currency
+        - interval
+      properties:
+        tier:
+          type: string
+          description: Plan tier identifier (founding, basic, pro).
+        name:
+          type: string
+        priceId:
+          type: string
+          description: Stripe price id to subscribe to.
+        unitAmount:
+          type: ["integer", "null"]
+          description: Price in the smallest currency unit (cents), or null.
+        currency:
+          type: string
+        interval:
+          type: string
+          description: Billing interval, e.g. "month".
+    BillingPlans:
+      type: object
+      required:
+        - plans
+        - foundingAvailable
+      properties:
+        plans:
+          type: array
+          items:
+            $ref: "#/components/schemas/Plan"
+        foundingAvailable:
+          type: boolean
+          description: Whether the discounted Founding plan still has availability.
+    CreateCheckoutSessionInput:
+      type: object
+      properties:
+        flow:
+          type: string
+          enum: [signup, dashboard]
+          description: Which page started checkout; controls where Stripe redirects back to. The plan tier is auto-selected server-side (Founding while available, otherwise Basic).
+    CheckoutSession:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: Stripe Checkout URL to redirect the attorney to.
+    BillingPortalSession:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          description: Stripe billing portal URL.
+    BillingConfirmResult:
+      type: object
+      required:
+        - ok
+        - updated
+      properties:
+        ok:
+          type: boolean
+        updated:
+          type: integer
+          description: Number of listings whose billing columns were updated.
+    DeleteOwnAccountResult:
+      type: object
+      required:
+        - success
+        - archivedListings
+        - canceledSubscriptions
+      properties:
+        success:
+          type: boolean
+        archivedListings:
+          type: integer
+          description: Number of the user's listings that were taken down (archived).
+        canceledSubscriptions:
+          type: integer
+          description: Number of active subscriptions canceled during deletion.
+    AccountInvoice:
+      type: object
+      required:
+        - id
+        - created
+        - currency
+      properties:
+        id:
+          type: string
+        number:
+          type: ["string", "null"]
+          description: Human-friendly invoice number, when assigned.
+        created:
+          type: integer
+          description: Invoice creation time (Unix seconds).
+        amountPaid:
+          type: integer
+          description: Amount paid, in the currency's minor unit (e.g. cents).
+        amountDue:
+          type: integer
+          description: Amount due, in the currency's minor unit.
+        currency:
+          type: string
+        status:
+          type: ["string", "null"]
+          description: Stripe invoice status (paid, open, void, ...).
+        hostedInvoiceUrl:
+          type: ["string", "null"]
+          description: Stripe-hosted invoice/receipt page.
+        invoicePdf:
+          type: ["string", "null"]
+          description: Direct PDF download link for the invoice.
+    AccountBillingSubscription:
+      type: object
+      properties:
+        status:
+          type: ["string", "null"]
+        tier:
+          type: ["string", "null"]
+        amount:
+          type: ["integer", "null"]
+          description: Recurring amount in the currency's minor unit (e.g. cents).
+        currency:
+          type: ["string", "null"]
+        interval:
+          type: ["string", "null"]
+          description: Billing interval (month, year).
+        currentPeriodEnd:
+          type: ["integer", "null"]
+          description: Next charge / period end (Unix seconds).
+        cancelAtPeriodEnd:
+          type: ["boolean", "null"]
+          description: Whether the subscription is set to cancel at period end.
+    AccountBillingListing:
+      type: object
+      required:
+        - attorneyId
+        - fullName
+        - status
+        - archived
+        - invoices
+      properties:
+        attorneyId:
+          type: integer
+        fullName:
+          type: string
+        firmName:
+          type: ["string", "null"]
+        status:
+          type: string
+        archived:
+          type: boolean
+        billingTier:
+          type: ["string", "null"]
+        subscriptionStatus:
+          type: ["string", "null"]
+        subscription:
+          oneOf:
+            - $ref: "#/components/schemas/AccountBillingSubscription"
+            - type: "null"
+          description: Live subscription detail from Stripe, or null when there is no subscription.
+        invoices:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountInvoice"
+    AccountBillingOverview:
+      type: object
+      required:
+        - listings
+      properties:
+        listings:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountBillingListing"
+    ContactMessageInput:
+      type: object
+      required:
+        - name
+        - email
+        - subject
+        - message
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        email:
+          type: string
+          minLength: 3
+          maxLength: 320
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 200
+        message:
+          type: string
+          minLength: 1
+          maxLength: 5000
+    ContactAck:
+      type: object
+      required:
+        - success
+      properties:
+        success:
+          type: boolean
+    ContactMessage:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - subject
+        - message
+        - handled
+        - createdAt
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        handled:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    SetContactHandledInput:
+      type: object
+      required:
+        - handled
+      properties:
+        handled:
+          type: boolean
+    AttorneyPauseInput:
+      type: object
+      required:
+        - paused
+      properties:
+        paused:
+          type: boolean
+          description: True to pause (hide) a live listing, false to resume it.
+    PracticeAreaCount:
+      type: object
+      required:
+        - practiceArea
+        - count
+      properties:
+        practiceArea:
+          type: string
+        count:
+          type: integer
+    CountyCount:
+      type: object
+      required:
+        - state
+        - stateCode
+        - county
+        - count
+      properties:
+        state:
+          type: string
+        stateCode:
+          type: string
+        county:
+          type: string
+        count:
+          type: integer
+    PracticeAreaCounty:
+      type: object
+      required:
+        - state
+        - stateCode
+        - county
+        - practiceArea
+        - count
+      properties:
+        state:
+          type: string
+        stateCode:
+          type: string
+        county:
+          type: string
+        practiceArea:
+          type: string
+        count:
+          type: integer
+    DirectoryStats:
+      type: object
+      required:
+        - totalAttorneys
+        - totalJurisdictions
+        - freeConsultationCount
+        - topPracticeAreas
+      properties:
+        totalAttorneys:
+          type: integer
+        totalJurisdictions:
+          type: integer
+        freeConsultationCount:
+          type: integer
+        topPracticeAreas:
+          type: array
+          items:
+            $ref: "#/components/schemas/PracticeAreaCount"
+    EventInput:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          minLength: 1
+          description: Event type, e.g. search, category_select, attorney_view, consultation_click, website_click.
+        attorneyId:
+          type: ["integer", "null"]
+        query:
+          type: ["string", "null"]
+        category:
+          type: ["string", "null"]
+        path:
+          type: ["string", "null"]
+        sessionId:
+          type: ["string", "null"]
+    EventAck:
+      type: object
+      required:
+        - ok
+      properties:
+        ok:
+          type: boolean
+    AnalyticsEvent:
+      type: object
+      required:
+        - id
+        - type
+        - createdAt
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+        attorneyId:
+          type: ["integer", "null"]
+        query:
+          type: ["string", "null"]
+        category:
+          type: ["string", "null"]
+        path:
+          type: ["string", "null"]
+        sessionId:
+          type: ["string", "null"]
+        attorneyName:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+    AdminLoginInput:
+      type: object
+      required:
+        - pin
+      properties:
+        pin:
+          type: string
+          minLength: 1
+    AdminSession:
+      type: object
+      required:
+        - authenticated
+      properties:
+        authenticated:
+          type: boolean
+        username:
+          type: ["string", "null"]
+    LabelCount:
+      type: object
+      required:
+        - label
+        - count
+      properties:
+        label:
+          type: string
+        count:
+          type: integer
+    AttorneyViewCount:
+      type: object
+      required:
+        - attorneyId
+        - attorneyName
+        - count
+      properties:
+        attorneyId:
+          type: integer
+        attorneyName:
+          type: string
+        count:
+          type: integer
+    DayCount:
+      type: object
+      required:
+        - date
+        - count
+      properties:
+        date:
+          type: string
+        count:
+          type: integer
+    AdminAnalytics:
+      type: object
+      required:
+        - totalEvents
+        - totalSearches
+        - totalProfileViews
+        - totalConsultationClicks
+        - approvedAttorneys
+        - pendingApplications
+        - topSearches
+        - topCategories
+        - topViewedAttorneys
+        - eventsByDay
+      properties:
+        totalEvents:
+          type: integer
+        totalSearches:
+          type: integer
+        totalProfileViews:
+          type: integer
+        totalConsultationClicks:
+          type: integer
+        approvedAttorneys:
+          type: integer
+        pendingApplications:
+          type: integer
+        topSearches:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelCount"
+        topCategories:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabelCount"
+        topViewedAttorneys:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttorneyViewCount"
+        eventsByDay:
+          type: array
+          items:
+            $ref: "#/components/schemas/DayCount"
+    AttorneyAnalyticsTotals:
+      type: object
+      required:
+        - profileViews
+        - consultationClicks
+        - websiteClicks
+      properties:
+        profileViews:
+          type: integer
+        consultationClicks:
+          type: integer
+        websiteClicks:
+          type: integer
+    AttorneyAnalyticsDay:
+      type: object
+      required:
+        - date
+        - profileViews
+        - consultationClicks
+        - websiteClicks
+      properties:
+        date:
+          type: string
+        profileViews:
+          type: integer
+        consultationClicks:
+          type: integer
+        websiteClicks:
+          type: integer
+    AttorneyAnalytics:
+      type: object
+      required:
+        - totals
+        - timeseries
+      properties:
+        totals:
+          $ref: "#/components/schemas/AttorneyAnalyticsTotals"
+        timeseries:
+          type: array
+          items:
+            $ref: "#/components/schemas/AttorneyAnalyticsDay"

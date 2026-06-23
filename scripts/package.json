@@ -1,0 +1,19 @@
+{
+  "name": "@workspace/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "hello": "tsx ./src/hello.ts",
+    "gen:towns": "tsx ./src/gen-towns.ts",
+    "seed:stripe": "tsx ./src/seed-products.ts",
+    "record:walkthrough": "node ./src/record-walkthrough.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "country-state-city": "^3.2.1",
+    "playwright-core": "^1.61.0",
+    "tsx": "catalog:"
+  }
+}

@@ -1,0 +1,15 @@
+# Caseway
+
+> Caseway is a directory and discovery platform that helps people in the United States find solo and independent attorneys. Clients pick a state and town, filter by legal category, and browse matching lawyer profiles on an interactive map — with practice areas, fees, languages, and a free-consultation booking link. Caseway is not a law firm and does not provide legal advice or lawyer referrals.
+
+## Find an attorney
+- [Search by location](https://caseway.us/): Choose a US state and town, then a legal category, to see matching attorneys on a map.
+- [Sitemap](https://caseway.us/api/sitemap.xml): Every indexed attorney profile, county landing page, and practice-area-by-county page.
+
+## For attorneys
+- [List your practice](https://caseway.us/sign-up): Solo and independent attorneys can create a listing and reach clients searching in their area.
+
+## Policies
+- [Terms of Service](https://caseway.us/terms)
+- [Privacy Policy](https://caseway.us/privacy)
+- [Legal Disclaimer](https://caseway.us/disclaimer): Caseway is a directory, not a law firm or lawyer referral service, and does not provide legal advice.

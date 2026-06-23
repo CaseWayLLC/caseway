@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Caseway — Marketing Strategy &amp; Go-to-Market Approach</title>
+<style>
+  :root {
+    --green: #214f38;
+    --green-deep: #14241d;
+    --gold: #d8ae5a;
+    --gold-soft: #ecdcb6;
+    --paper: #faf9f6;
+    --cream: #f4eddd;
+    --ink: #14241d;
+    --muted: #62746b;
+    --line: #e6e1d8;
+  }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+
+  .serif { font-family: Georgia, "Times New Roman", "Liberation Serif", serif; }
+
+  /* ---------- page scaffold ---------- */
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    padding: 22mm 20mm 20mm 20mm;
+    overflow: hidden;
+    page-break-after: always;
+    background: var(--paper);
+  }
+  .page:last-child { page-break-after: auto; }
+
+  .pagefoot {
+    position: absolute;
+    left: 20mm;
+    right: 20mm;
+    bottom: 12mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 8pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 6px;
+  }
+  .pagefoot .mark { font-weight: 700; color: var(--green); }
+
+  /* ---------- typography ---------- */
+  .kicker {
+    font-size: 8.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .kicker.dark { color: var(--green); }
+
+  h1.section {
+    font-size: 27pt;
+    line-height: 1.08;
+    color: var(--green-deep);
+    margin: 8px 0 14px;
+    font-weight: 400;
+  }
+  h2.sub {
+    font-size: 14pt;
+    color: var(--green);
+    margin: 22px 0 8px;
+    font-weight: 700;
+  }
+  p { margin-bottom: 9px; color: #2a3a32; }
+  p.lead { font-size: 12pt; line-height: 1.55; color: #38473f; }
+  strong { color: var(--green-deep); }
+
+  .rule {
+    width: 46px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin: 0 0 4px;
+  }
+
+  /* ---------- cover ---------- */
+  .cover {
+    background:
+      radial-gradient(120% 80% at 80% 0%, #2c6249 0%, rgba(44,98,73,0) 55%),
+      linear-gradient(160deg, #1c4733 0%, #14241d 100%);
+    color: #f4eddd;
+    padding: 26mm 22mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .cover .brandrow { display: flex; align-items: center; gap: 12px; }
+  .cover .brandrow img { width: 46px; height: 46px; }
+  .cover .wordmark {
+    font-size: 22pt;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: #fff;
+  }
+  .cover .pathline {
+    margin-top: 7mm;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold) 0%, rgba(216,174,90,0) 100%);
+  }
+  .cover .covtitle {
+    font-size: 40pt;
+    line-height: 1.05;
+    font-weight: 400;
+    color: #ffffff;
+    margin-top: auto;
+  }
+  .cover .covtitle em { color: var(--gold); font-style: normal; }
+  .cover .tagline {
+    font-size: 13pt;
+    color: var(--gold-soft);
+    margin-top: 16px;
+    max-width: 120mm;
+  }
+  .cover .covmeta {
+    margin-top: 12mm;
+    display: flex;
+    gap: 34px;
+    font-size: 9pt;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(244,237,221,0.72);
+  }
+  .cover .covmeta b { display: block; color: #fff; font-size: 10.5pt; letter-spacing: 0; text-transform: none; margin-top: 3px; }
+  .cover .confidential {
+    position: absolute;
+    bottom: 16mm;
+    left: 22mm;
+    right: 22mm;
+    font-size: 8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(244,237,221,0.5);
+    border-top: 1px solid rgba(244,237,221,0.18);
+    padding-top: 8px;
+  }
+
+  /* ---------- stat band ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 16px 0 4px;
+  }
+  .stat {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 13px;
+  }
+  .stat .num { font-family: Georgia, serif; font-size: 22pt; color: var(--green); line-height: 1; }
+  .stat .num small { font-size: 12pt; color: var(--gold); }
+  .stat .lbl { font-size: 8pt; color: var(--muted); margin-top: 7px; letter-spacing: 0.03em; line-height: 1.35; }
+
+  /* ---------- cards & grids ---------- */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px 17px;
+    break-inside: avoid;
+  }
+  .card.tint { background: var(--cream); border-color: var(--gold-soft); }
+  .card.green { background: var(--green); border-color: var(--green); color: #eef3ef; }
+  .card.green h3, .card.green .ct { color: #fff; }
+  .card.green p { color: #d3e0d8; }
+  .card h3 {
+    font-size: 11.5pt;
+    color: var(--green-deep);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .pin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    background: var(--cream);
+    color: var(--green);
+    font-size: 9pt;
+    font-weight: 700;
+    flex: none;
+  }
+  .card.green .pin { background: rgba(255,255,255,0.16); color: var(--gold); }
+  .card p:last-child { margin-bottom: 0; }
+  .card .ct { font-size: 9.5pt; color: var(--muted); }
+
+  ul.clean { list-style: none; margin: 6px 0 0; }
+  ul.clean li {
+    position: relative;
+    padding-left: 16px;
+    margin-bottom: 6px;
+    font-size: 9.8pt;
+    color: #2f3f37;
+  }
+  ul.clean li::before {
+    content: "";
+    position: absolute; left: 0; top: 6px;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ---------- flywheel ---------- */
+  .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 6px; }
+  .flow .step {
+    background: #fff; border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px; position: relative;
+  }
+  .flow .step .n { font-size: 8pt; color: var(--gold); font-weight: 700; letter-spacing: 0.08em; }
+  .flow .step h4 { font-size: 10pt; color: var(--green-deep); margin: 4px 0 4px; }
+  .flow .step p { font-size: 8.6pt; color: var(--muted); margin: 0; }
+  .flow .step::after {
+    content: "\2192";
+    position: absolute; right: -9px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--gold); font-size: 12pt; z-index: 2;
+  }
+  .flow .step:last-child::after { content: ""; }
+
+  /* ---------- funnel ---------- */
+  .funnel { margin-top: 8px; }
+  .fstage {
+    display: flex; align-items: center; gap: 14px;
+    margin: 0 auto 7px; padding: 11px 16px;
+    background: #fff; border: 1px solid var(--line); border-radius: 10px;
+    break-inside: avoid;
+  }
+  .fstage .ftag { font-size: 7.5pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 700; width: 108px; flex: none; }
+  .fstage .ftxt { font-size: 9.6pt; color: #2f3f37; }
+  .fstage .ftxt b { color: var(--green-deep); }
+  .fstage:nth-child(1) { width: 100%; }
+  .fstage:nth-child(2) { width: 92%; }
+  .fstage:nth-child(3) { width: 80%; }
+  .fstage:nth-child(4) { width: 66%; background: var(--green); border-color: var(--green); }
+  .fstage:nth-child(4) .ftxt, .fstage:nth-child(4) .ftxt b { color: #fff; }
+  .fstage:nth-child(4) .ftag { color: var(--gold); }
+
+  /* ---------- pricing ---------- */
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 6px; }
+  .tier { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: #fff; }
+  .tier.feature { background: var(--green); border-color: var(--green); color: #fff; box-shadow: 0 8px 20px rgba(20,36,29,0.18); }
+  .tier .tname { font-size: 10pt; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 700; color: var(--green); }
+  .tier.feature .tname { color: var(--gold); }
+  .tier .price { font-family: Georgia, serif; font-size: 26pt; margin: 6px 0 2px; color: var(--green-deep); }
+  .tier.feature .price { color: #fff; }
+  .tier .price small { font-size: 10pt; color: var(--muted); }
+  .tier.feature .price small { color: #cfe0d6; }
+  .tier .tdesc { font-size: 9pt; color: var(--muted); min-height: 30px; }
+  .tier.feature .tdesc { color: #d3e0d8; }
+  .badge { display: inline-block; font-size: 7.5pt; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; background: var(--gold); color: var(--green-deep); padding: 2px 8px; border-radius: 20px; margin-bottom: 6px; }
+
+  /* ---------- kpi table ---------- */
+  table.kpi { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 9.4pt; }
+  table.kpi th { text-align: left; font-size: 8pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 8px 10px; border-bottom: 2px solid var(--line); }
+  table.kpi td { padding: 9px 10px; border-bottom: 1px solid var(--line); color: #2f3f37; vertical-align: top; }
+  table.kpi td.lead { color: var(--green-deep); font-weight: 700; white-space: nowrap; }
+  table.kpi tr:nth-child(even) td { background: #fbfaf6; }
+
+  /* ---------- timeline ---------- */
+  .phase { display: flex; gap: 14px; margin-bottom: 12px; break-inside: avoid; }
+  .phase .dot { flex: none; width: 30px; height: 30px; border-radius: 50%; background: var(--cream); color: var(--green); display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-size: 12pt; border: 1px solid var(--gold-soft); }
+  .phase.now .dot { background: var(--green); color: var(--gold); border-color: var(--green); }
+  .phase .pbody h3 { font-size: 11.5pt; color: var(--green-deep); }
+  .phase .pbody .ptag { font-size: 8pt; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+  .phase .pbody p { font-size: 9.5pt; color: var(--muted); margin: 3px 0 0; }
+
+  .pull {
+    border-left: 3px solid var(--gold);
+    padding: 4px 0 4px 14px;
+    margin: 14px 0;
+    font-family: Georgia, serif;
+    font-size: 13pt;
+    line-height: 1.45;
+    color: var(--green-deep);
+  }
+  .intro { color: var(--muted); font-size: 10pt; max-width: 150mm; }
+</style>
+</head>
+<body>
+
+<!-- ===================== COVER ===================== -->
+<section class="page cover">
+  <div class="brandrow">
+    <img src="file:///home/runner/workspace/artifacts/solomatch/src/assets/logo-icon.png" alt="Caseway" />
+    <span class="wordmark">Caseway</span>
+  </div>
+  <div class="pathline"></div>
+
+  <h1 class="covtitle serif">Marketing Strategy<br/>&amp; <em>Go-to-Market</em> Approach</h1>
+  <p class="tagline serif">Find your way to the right attorney.</p>
+
+  <div class="covmeta">
+    <div>Prepared<b>June 2026</b></div>
+    <div>Document<b>Strategy Overview</b></div>
+    <div>Stage<b>Launch &amp; Growth</b></div>
+  </div>
+
+  <div class="confidential">Caseway &mdash; Confidential &middot; The trustworthy way to find a solo attorney near you</div>
+</section>
+
+<!-- ===================== EXECUTIVE SUMMARY ===================== -->
+<section class="page">
+  <span class="kicker">01 &middot; Executive Summary</span>
+  <h1 class="section serif">A two-sided marketplace built<br/>to compound.</h1>
+  <div class="rule"></div>
+
+  <p class="lead">Caseway is a Zillow-style marketplace that connects people who need legal help with solo and independent attorneys. Clients answer two plain-language questions and browse matching lawyers on an interactive map. Attorneys list their practice for free and pay only to stay visible.</p>
+
+  <p>Our strategy rests on a single idea: <strong>grow supply with zero friction, capture demand with local SEO, and convert visibility into recurring revenue.</strong> Intake is free, so attorneys join with nothing to lose. Each new attorney expands our geographic coverage, which spins up new local landing pages, which pull in high-intent clients searching for legal help nearby. When attorneys see real clients arrive, they subscribe to stay listed and refer their peers &mdash; and the loop tightens.</p>
+
+  <p>Three compounding engines drive the plan: a <strong>Founding Member offer</strong> that fills supply fast and rewards early believers, an <strong>attorney-to-attorney referral program</strong> that turns tight professional networks into a growth channel, and <strong>programmatic local SEO</strong> that manufactures thousands of high-intent landing pages automatically as we scale.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">3</div><div class="lbl">Subscription tiers, transparently priced</div></div>
+    <div class="stat"><div class="num"><small>$</small>10<small>/mo</small></div><div class="lbl">Founding rate &mdash; first 10,000 attorneys</div></div>
+    <div class="stat"><div class="num">100<small>+</small></div><div class="lbl">Local landing pages live, scaling with supply</div></div>
+    <div class="stat"><div class="num">$0</div><div class="lbl">To browse &amp; to list &mdash; pay only to be seen</div></div>
+  </div>
+
+  <div class="pull">"Free to list. Pay to be found. Every new attorney makes the next client easier to reach."</div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== MARKET & PROBLEM ===================== -->
+<section class="page">
+  <span class="kicker">02 &middot; Opportunity</span>
+  <h1 class="section serif">A large, fragmented market<br/>that incumbents overcharge.</h1>
+  <div class="rule"></div>
+
+  <p class="intro">Most U.S. attorneys are solo or small-firm practitioners with little marketing budget and no time for SEO or ad management. Meanwhile, people searching for a lawyer face directories that are cluttered, pay-to-win, or hard to trust. That gap is the opportunity.</p>
+
+  <h2 class="sub">The problem, both sides feel it</h2>
+  <div class="two">
+    <div class="card">
+      <h3><span class="pin">C</span> For clients</h3>
+      <p class="ct">Finding a lawyer is opaque and stressful, usually in a difficult moment. Legacy directories bury small practices under big-firm ad spend, jargon is everywhere, and there is no simple way to compare nearby options or judge who to trust.</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">A</span> For attorneys</h3>
+      <p class="ct">Getting found online is expensive and technical. SEO, ad campaigns, and directory fees eat thin solo margins, and incumbents bundle solos alongside large firms they cannot outbid. Most solos simply rely on word of mouth.</p>
+    </div>
+  </div>
+
+  <h2 class="sub">Why now</h2>
+  <ul class="clean">
+    <li><strong>Underserved supply.</strong> Solo and independent attorneys are the majority of the profession and the least served by existing legal-marketing products.</li>
+    <li><strong>High-intent demand.</strong> People searching "{practice area} attorney near me" are ready to act &mdash; the highest-converting traffic in legal.</li>
+    <li><strong>Incumbent fatigue.</strong> FindLaw, Avvo, and Justia are seen as costly and cluttered, leaving room for a clean, solo-first, transparently priced alternative.</li>
+    <li><strong>A defensible wedge.</strong> A map-first, plain-language experience purpose-built for solos is hard for generalist directories to copy without alienating their big-firm advertisers.</li>
+  </ul>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== AUDIENCE ===================== -->
+<section class="page">
+  <span class="kicker">03 &middot; Who We Serve</span>
+  <h1 class="section serif">Two audiences, one map.</h1>
+  <div class="rule"></div>
+  <p class="intro">Caseway is a two-sided product. Clients are the demand we capture; attorneys are the supply we monetize. Every decision is weighed against both.</p>
+
+  <div class="two" style="margin-top:14px;">
+    <div class="card tint">
+      <h3><span class="pin">C</span> Clients &mdash; the demand</h3>
+      <p class="ct" style="margin-bottom:8px;">Individuals and small businesses with a specific, local legal need.</p>
+      <ul class="clean">
+        <li>Searching locally, often urgently</li>
+        <li>Family, criminal, real estate, business, estate &amp; more</li>
+        <li>Value trust, proximity, and a free first conversation</li>
+        <li>Want plain language, not legal jargon</li>
+      </ul>
+    </div>
+    <div class="card green">
+      <h3><span class="pin">A</span> Attorneys &mdash; the supply</h3>
+      <p style="margin-bottom:8px;">Solo and independent attorneys and small firms who want more clients without the overhead.</p>
+      <ul class="clean">
+        <li>Price-sensitive, time-poor</li>
+        <li>No appetite for ad management or contracts</li>
+        <li>Want to simply be found by nearby clients</li>
+        <li>Trust peer referrals over vendors</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sub">What each side hires Caseway to do</h2>
+  <table class="kpi">
+    <tr><th>Audience</th><th>The job to be done</th><th>How Caseway delivers</th></tr>
+    <tr><td class="lead">Client</td><td>"Find a trustworthy local lawyer for my problem, fast."</td><td>Two questions &rarr; map of matching attorneys &rarr; book a free consult.</td></tr>
+    <tr><td class="lead">Attorney</td><td>"Get discovered by local clients without becoming a marketer."</td><td>Free listing &rarr; local SEO does the work &rarr; pay only to stay visible.</td></tr>
+  </table>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== POSITIONING & BRAND ===================== -->
+<section class="page">
+  <span class="kicker">04 &middot; Positioning &amp; Brand</span>
+  <h1 class="section serif">The trustworthy way to find<br/>a solo attorney near you.</h1>
+  <div class="rule"></div>
+
+  <div class="two" style="margin-top:6px;">
+    <div>
+      <h2 class="sub" style="margin-top:6px;">Value proposition</h2>
+      <p><strong>For clients:</strong> Find the right local attorney in minutes &mdash; answer two questions, browse a map, book a free consultation. No jargon, no spam.</p>
+      <p><strong>For attorneys:</strong> List free and get discovered by high-intent local clients. Pay only to stay visible &mdash; no ad management, no long contracts, starting at the price of a coffee a day.</p>
+
+      <h2 class="sub">What sets us apart</h2>
+      <ul class="clean">
+        <li><strong>Solo-first</strong>, not built around big firms</li>
+        <li><strong>Map-first</strong> discovery, like Zillow for lawyers</li>
+        <li><strong>Transparent pricing</strong> &mdash; no auctions, no hidden fees</li>
+        <li><strong>Free intake</strong>, so supply has nothing to lose</li>
+      </ul>
+    </div>
+    <div class="card tint">
+      <h3 style="margin-bottom:10px;">Brand at a glance</h3>
+      <p class="ct" style="margin-bottom:4px;"><strong>Promise</strong><br/>Find your way to the right attorney.</p>
+      <p class="ct" style="margin-bottom:4px;"><strong>Personality</strong><br/>Clean, modern, minimal, trustworthy.</p>
+      <p class="ct" style="margin-bottom:4px;"><strong>Voice</strong><br/>Plain-language, reassuring, professional.</p>
+      <p class="ct" style="margin-bottom:10px;"><strong>Mark</strong><br/>A location pin holding the scales of justice &mdash; the place where law meets your neighborhood.</p>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span style="width:26px;height:26px;border-radius:6px;background:#214f38;border:1px solid #14241d;"></span>
+        <span style="width:26px;height:26px;border-radius:6px;background:#d8ae5a;"></span>
+        <span style="width:26px;height:26px;border-radius:6px;background:#faf9f6;border:1px solid #e6e1d8;"></span>
+        <span class="ct" style="margin-left:6px;">Forest green &middot; Gold &middot; Warm white</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull">"Caseway should feel like the calm, credible friend who happens to know a great lawyer down the street."</div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== FLYWHEEL ===================== -->
+<section class="page">
+  <span class="kicker">05 &middot; Growth Model</span>
+  <h1 class="section serif">The marketplace flywheel.</h1>
+  <div class="rule"></div>
+  <p class="intro">Liquidity is the whole game. We seed supply for free, then let local SEO and referrals turn that supply into demand, and demand into revenue and more supply.</p>
+
+  <div class="flow">
+    <div class="step"><div class="n">STEP 1</div><h4>Attorneys list free</h4><p>Zero-friction intake builds geographic supply quickly.</p></div>
+    <div class="step"><div class="n">STEP 2</div><h4>Coverage spins up pages</h4><p>Each location &times; practice area auto-creates a local SEO page.</p></div>
+    <div class="step"><div class="n">STEP 3</div><h4>Clients arrive</h4><p>High-intent local searchers find and contact nearby attorneys.</p></div>
+    <div class="step"><div class="n">STEP 4</div><h4>Attorneys pay &amp; refer</h4><p>Real ROI drives subscriptions and peer referrals &mdash; back to step 1.</p></div>
+  </div>
+
+  <h2 class="sub">The three compounding engines</h2>
+  <div class="two">
+    <div class="card">
+      <h3><span class="pin">1</span> Founding Member offer</h3>
+      <p class="ct">A locked-in $10/mo rate for the first 10,000 attorneys creates urgency and scarcity, fills supply fast, and converts early adopters into loyal evangelists.</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">2</span> Referral program</h3>
+      <p class="ct">Attorneys name who referred them; referrers rank higher and climb a leaderboard. Tight professional networks &mdash; bar groups, alumni, local bars &mdash; become a viral channel.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h3><span class="pin">3</span> Programmatic local SEO</h3>
+    <p class="ct">"{Practice Area} Attorneys in {County}, {State}" pages are generated automatically and grow with every new attorney and location &mdash; a content moat that expands itself, capturing long-tail, high-intent search at near-zero marginal cost.</p>
+  </div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== SUPPLY SIDE ===================== -->
+<section class="page">
+  <span class="kicker">06 &middot; Supply Acquisition</span>
+  <h1 class="section serif">Winning the attorneys.</h1>
+  <div class="rule"></div>
+  <p class="intro">Supply comes first &mdash; a directory with no lawyers helps no one. We remove every reason to say no, then give attorneys reasons to bring their peers.</p>
+
+  <h2 class="sub">Playbook</h2>
+  <ul class="clean">
+    <li><strong>Free, no-risk intake.</strong> Listing costs nothing and carries no upfront charge; attorneys pay only when they choose to go live and stay visible.</li>
+    <li><strong>Founding Member urgency.</strong> The first 10,000 attorneys lock in $10/mo &mdash; a once-only, scarcity-driven reason to join now rather than later.</li>
+    <li><strong>Peer referrals.</strong> A built-in referral program rewards attorneys who bring colleagues with higher ranking and leaderboard status.</li>
+    <li><strong>A clear upgrade path.</strong> Three tiers let attorneys start cheap and step up to premium placement as they see returns.</li>
+    <li><strong>Direct &amp; partnership outreach.</strong> Bar-association partnerships, CLE events, and targeted LinkedIn/email to solos seed the earliest cohorts.</li>
+  </ul>
+
+  <div class="two" style="margin-top:6px;">
+    <div class="card green">
+      <h3><span class="pin">!</span> Why "pay to be seen" works</h3>
+      <p>Attorneys experience value <em>before</em> they pay. A free listing plus inbound local traffic proves ROI, so the subscription feels like keeping a working channel on &mdash; not gambling on an ad.</p>
+    </div>
+    <div class="card tint">
+      <h3>Activation metric that matters</h3>
+      <p class="ct">The key conversion is <strong>list &rarr; subscribe</strong>. Everything on the supply side &mdash; onboarding, the Founding offer, lead notifications &mdash; is engineered to move attorneys across that line and keep them renewing.</p>
+    </div>
+  </div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== DEMAND SIDE ===================== -->
+<section class="page">
+  <span class="kicker">07 &middot; Demand Acquisition</span>
+  <h1 class="section serif">Winning the clients.</h1>
+  <div class="rule"></div>
+  <p class="intro">Client acquisition is led by organic search. We turn supply into thousands of pages that match exactly what people type when they need a lawyer &mdash; then convert that traffic with trust.</p>
+
+  <h2 class="sub">Channels &amp; tactics</h2>
+  <div class="two">
+    <div class="card">
+      <h3><span class="pin">S</span> Programmatic SEO</h3>
+      <p class="ct">Auto-generated location and practice-area landing pages (100+ live and scaling) capture long-tail "near me" searches &mdash; the cheapest, highest-intent traffic in legal.</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">L</span> Local &amp; technical SEO</h3>
+      <p class="ct">Structured data (JSON-LD), clean sitemaps, and a fast experience help every county, profile, and practice-area page get indexed and rank.</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">G</span> Content &amp; guides</h3>
+      <p class="ct">Plain-language explainers ("how to find a divorce lawyer," "what to ask in a free consultation") build authority and capture top-of-funnel demand.</p>
+    </div>
+    <div class="card">
+      <h3><span class="pin">T</span> Trust &amp; conversion</h3>
+      <p class="ct">Verification badges, a free-consultation CTA, and client reviews turn visitors into booked consultations &mdash; the metric attorneys actually pay for.</p>
+    </div>
+  </div>
+
+  <div class="pull">"Every attorney we add is also a marketer for us &mdash; they send their own clients to their Caseway profile."</div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== FUNNEL + PRICING ===================== -->
+<section class="page">
+  <span class="kicker">08 &middot; Funnel &amp; Monetization</span>
+  <h1 class="section serif">From search to subscription.</h1>
+  <div class="rule"></div>
+
+  <h2 class="sub" style="margin-top:4px;">The marketing funnel</h2>
+  <div class="funnel">
+    <div class="fstage"><span class="ftag">Awareness</span><span class="ftxt"><b>SEO, content &amp; referrals</b> bring clients and attorneys to Caseway.</span></div>
+    <div class="fstage"><span class="ftag">Consideration</span><span class="ftxt"><b>Map browse &amp; profiles</b> &mdash; compare nearby attorneys, read reviews.</span></div>
+    <div class="fstage"><span class="ftag">Conversion</span><span class="ftxt"><b>Book a free consult</b> or submit a lead; attorney subscribes to go live.</span></div>
+    <div class="fstage"><span class="ftag">Retention</span><span class="ftxt"><b>Renewals &amp; referrals</b> &mdash; attorneys keep paying, clients return.</span></div>
+  </div>
+
+  <h2 class="sub">Pricing &mdash; the paid-posts model</h2>
+  <p class="intro" style="margin-bottom:4px;">Free to list and browse; an approved listing is publicly visible only with an active subscription. Paying buys visibility itself &mdash; predictable, recurring revenue rather than per-click auctions.</p>
+  <div class="tiers">
+    <div class="tier">
+      <span class="badge">Limited</span>
+      <div class="tname">Founding</div>
+      <div class="price">$10<small>/mo</small></div>
+      <div class="tdesc">Locked-in rate for the first 10,000 attorneys. Full public listing.</div>
+    </div>
+    <div class="tier">
+      <div class="tname">Basic</div>
+      <div class="price">$100<small>/mo</small></div>
+      <div class="tdesc">Standard public listing for attorneys joining after the founding window.</div>
+    </div>
+    <div class="tier feature">
+      <span class="badge">Top rank</span>
+      <div class="tname">Pro</div>
+      <div class="price">$250<small>/mo</small></div>
+      <div class="tdesc">Public listing plus premium placement &mdash; ranked above all non-Pro attorneys.</div>
+    </div>
+  </div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== KPIS ===================== -->
+<section class="page">
+  <span class="kicker">09 &middot; Measurement</span>
+  <h1 class="section serif">How we know it's working.</h1>
+  <div class="rule"></div>
+  <p class="intro">We track the marketplace as two funnels and the loops that connect them. The north star is <strong>paying, retained attorneys</strong> &mdash; the proof that clients are arriving and converting.</p>
+
+  <table class="kpi">
+    <tr><th>Area</th><th>Metric</th><th>Why it matters</th></tr>
+    <tr><td class="lead">Supply</td><td>Attorneys listed &middot; paying &middot; Founding seats filled</td><td>Raw inventory and how fast the scarcity offer is consumed.</td></tr>
+    <tr><td class="lead">Activation</td><td>List &rarr; subscribe rate</td><td>The core supply conversion &mdash; value proven, wallet opened.</td></tr>
+    <tr><td class="lead">Revenue</td><td>MRR &middot; ARPU &middot; churn</td><td>Health and durability of recurring subscription income.</td></tr>
+    <tr><td class="lead">Demand</td><td>Organic sessions &middot; pages indexed</td><td>Reach of the programmatic-SEO content moat.</td></tr>
+    <tr><td class="lead">Conversion</td><td>Consultations &amp; leads booked</td><td>The outcome attorneys actually pay to receive.</td></tr>
+    <tr><td class="lead">Loops</td><td>Referrals per referrer &middot; SEO pages per new attorney</td><td>Whether the compounding engines are actually compounding.</td></tr>
+    <tr><td class="lead">Efficiency</td><td>LTV : CAC</td><td>That growth is profitable, not bought.</td></tr>
+  </table>
+
+  <div class="pull">"If list-to-subscribe is healthy and referrals are above one per referrer, the flywheel is turning on its own."</div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+<!-- ===================== ROADMAP ===================== -->
+<section class="page">
+  <span class="kicker">10 &middot; Roadmap</span>
+  <h1 class="section serif">Phasing the go-to-market.</h1>
+  <div class="rule"></div>
+  <p class="intro">We build the supply foundation first, switch on the demand and conversion engines next, then pour fuel on what works.</p>
+
+  <div style="margin-top:14px;">
+    <div class="phase now">
+      <div class="dot">1</div>
+      <div class="pbody">
+        <div class="ptag">Now &middot; Foundation live</div>
+        <h3>Build supply &amp; the discovery experience</h3>
+        <p>Map-first directory, free attorney intake, paid-posts subscription billing, programmatic SEO pages, the referral program, attorney analytics, and admin tooling &mdash; all live.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="dot">2</div>
+      <div class="pbody">
+        <div class="ptag">Next &middot; Turn on demand</div>
+        <h3>Capture &amp; convert client interest</h3>
+        <p>Email notifications (lead alerts &amp; approvals), per-attorney lead capture, client reviews &amp; ratings, and a plain-language content library to grow and convert organic traffic.</p>
+      </div>
+    </div>
+    <div class="phase">
+      <div class="dot">3</div>
+      <div class="pbody">
+        <div class="ptag">Then &middot; Scale</div>
+        <h3>Expand reach &amp; deepen trust</h3>
+        <p>Bar-association partnerships, new geographies, selective paid acquisition, conversion polish (favorites, compare, trust badges), and the mobile app.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card green" style="margin-top:10px;">
+    <h3><span class="pin">&rarr;</span> The one-line strategy</h3>
+    <p>Seed attorney supply for free, manufacture high-intent demand with local SEO, convert visibility into recurring revenue, and let referrals and content compound the whole thing.</p>
+  </div>
+
+  <div class="pagefoot"><span class="mark">CASEWAY</span><span>Marketing Strategy &amp; Go-to-Market Approach</span></div>
+</section>
+
+</body>
+</html>

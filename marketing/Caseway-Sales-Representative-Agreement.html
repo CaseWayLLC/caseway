@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Caseway — Independent Sales Representative Agreement</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: hsl(153 30% 11%);
+        --green: hsl(150 41% 22%);
+        --green-d: hsl(150 41% 13%);
+        --gold: hsl(40 56% 49%);
+        --gold-d: hsl(40 60% 40%);
+        --cream: hsl(40 24% 98%);
+        --muted: hsl(150 7% 38%);
+        --line: hsl(40 12% 85%);
+        --green-tint: hsl(150 24% 96%);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--ink);
+        background: #fff;
+        font-size: 10.5px;
+        line-height: 1.6;
+      }
+      .doc { max-width: 7.1in; margin: 0 auto; padding: 0.1in 0 0.4in; }
+
+      /* letterhead */
+      .brand { display: flex; align-items: center; gap: 11px; }
+      .brand img { width: 34px; height: 34px; }
+      .brand .name {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 21px;
+        letter-spacing: -0.01em; color: var(--ink);
+      }
+      .brand .kicker {
+        margin-left: auto; font-size: 9px; font-weight: 600;
+        letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+      }
+      .hr { height: 1px; background: var(--line); margin: 13px 0 0; position: relative; }
+      .hr::before {
+        content: ""; position: absolute; left: 0; top: -1px;
+        width: 80px; height: 3px; background: var(--gold);
+      }
+
+      .eyebrow {
+        font-size: 9.5px; font-weight: 600; letter-spacing: 0.22em;
+        text-transform: uppercase; color: var(--gold-d); margin-top: 22px;
+      }
+      h1 {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 29px;
+        line-height: 1.06; letter-spacing: -0.02em; margin-top: 8px;
+      }
+      .parties {
+        margin-top: 14px; font-size: 11px; line-height: 1.65; color: var(--ink);
+      }
+      .parties .ph, .ph {
+        background: hsl(40 70% 92%); color: var(--gold-d); font-weight: 600;
+        padding: 0 4px; border-radius: 3px; white-space: nowrap;
+      }
+      .recital {
+        margin-top: 12px; font-size: 10px; line-height: 1.6; color: var(--muted);
+        border-left: 2px solid var(--line); padding-left: 12px;
+      }
+      .recital b { color: var(--ink); }
+
+      h2 {
+        font-family: "Fraunces", serif; font-weight: 600; font-size: 13.5px;
+        color: var(--green); margin: 19px 0 6px; letter-spacing: -0.01em;
+        break-after: avoid; display: flex; gap: 9px; align-items: baseline;
+      }
+      h2 .n {
+        font-family: "Inter", sans-serif; font-size: 10px; font-weight: 700;
+        color: var(--gold-d); min-width: 18px;
+      }
+      .clause { padding-left: 27px; }
+      .clause p { margin-top: 6px; }
+      .clause p:first-child { margin-top: 0; }
+      .sub { font-weight: 600; color: var(--ink); }
+      .clause ul { margin: 6px 0 0; padding-left: 16px; }
+      .clause li { margin-top: 5px; }
+      b, strong { color: var(--ink); font-weight: 600; }
+
+      /* callout */
+      .callout {
+        margin: 12px 0 4px; background: var(--green-tint);
+        border: 1px solid hsl(150 28% 86%); border-left: 3px solid var(--green);
+        border-radius: 9px; padding: 13px 16px; break-inside: avoid;
+      }
+      .callout .lab {
+        font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--green); margin-bottom: 5px;
+      }
+      .callout p { font-size: 10.5px; line-height: 1.6; }
+
+      /* tier table */
+      .tier { break-inside: avoid; margin: 10px 0 2px; }
+      table { width: 100%; border-collapse: collapse; }
+      th {
+        text-align: left; font-size: 8.5px; font-weight: 700; letter-spacing: 0.1em;
+        text-transform: uppercase; color: var(--muted);
+        padding: 0 0 6px; border-bottom: 1px solid var(--line);
+      }
+      th.r, td.r { text-align: right; }
+      td {
+        font-size: 11px; padding: 6px 0; border-bottom: 1px solid var(--line);
+        color: var(--ink);
+      }
+      td .rate { font-family: "Fraunces", serif; font-weight: 600; font-size: 13px; color: var(--green); }
+      tr:last-child td { border-bottom: none; }
+
+      /* signatures */
+      .sigwrap { break-inside: avoid; margin-top: 26px; }
+      .siggrid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 14px; }
+      .sigblock .role {
+        font-size: 9px; font-weight: 700; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--gold-d); margin-bottom: 22px;
+      }
+      .sigline { border-top: 1px solid var(--ink); padding-top: 5px; margin-top: 22px; }
+      .sigline .cap { font-size: 8.5px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+
+      .foot {
+        margin-top: 30px; padding-top: 12px; border-top: 1px solid var(--line);
+        font-size: 8.5px; line-height: 1.5; color: var(--muted); break-inside: avoid;
+      }
+      .foot b { color: var(--green); }
+      a { color: var(--green); }
+    </style>
+  </head>
+  <body>
+    <div class="doc">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Caseway" />
+        <span class="name">Caseway</span>
+        <span class="kicker">Sales · Independent representative agreement</span>
+      </div>
+      <div class="hr"></div>
+
+      <div class="eyebrow">Independent contractor agreement</div>
+      <h1>Sales Representative Agreement</h1>
+
+      <p class="parties">
+        This Independent Sales Representative Agreement (the &ldquo;Agreement&rdquo;) is entered
+        into as of <span class="ph">[Effective Date]</span> (the &ldquo;Effective Date&rdquo;) by
+        and between <b>CaseWay LLC</b>, a
+        Wyoming limited liability company (the &ldquo;Company&rdquo;), and
+        <span class="ph">[Representative Full Name]</span>, an individual (the
+        &ldquo;Representative&rdquo;). The Company and the Representative are each a
+        &ldquo;Party&rdquo; and together the &ldquo;Parties.&rdquo;
+      </p>
+
+      <p class="recital">
+        <b>Caseway</b> is an online directory that connects clients with independent attorneys, owned
+        and operated by the Company. Subscription payments for Caseway listings are collected by
+        <b>Indicium Markets Inc.</b> (the &ldquo;Payment Collector&rdquo;) on the Company&rsquo;s
+        behalf, while the Company pays the commissions due under this Agreement. The Company wishes to
+        engage the Representative, on a non-exclusive basis, to solicit attorneys to purchase a paid
+        Caseway listing, and the Representative wishes to be so engaged, on the terms below.
+      </p>
+
+      <!-- 1 -->
+      <h2><span class="n">1.</span> Engagement &amp; Scope</h2>
+      <div class="clause">
+        <p><span class="sub">1.1 Appointment.</span> The Company appoints the Representative as a
+        non-exclusive, revocable independent sales representative to introduce and solicit licensed
+        attorneys (&ldquo;Prospects&rdquo;) to register for and purchase a paid Caseway subscription
+        listing.</p>
+        <p><span class="sub">1.2 Non-Exclusive.</span> No territory, quota, or exclusivity is
+        granted. The Company may engage other representatives, sell directly, and pursue any channel
+        without obligation to the Representative.</p>
+        <p><span class="sub">1.3 No Authority to Bind.</span> The Representative has no authority to
+        bind the Company, set or alter pricing, accept payment, make warranties, or create any
+        obligation on the Company&rsquo;s behalf. Every sign-up and subscription is subject to the
+        Company&rsquo;s standard terms, pricing, and approval, including the Company&rsquo;s right to
+        reject, decline, or remove any listing in its sole discretion.</p>
+        <p><span class="sub">1.4 Manner of Performance.</span> The Representative controls its own
+        methods, hours, and means of solicitation and supplies its own equipment.</p>
+      </div>
+
+      <!-- 2 -->
+      <h2><span class="n">2.</span> Independent Contractor Status</h2>
+      <div class="clause">
+        <p><span class="sub">2.1 Status.</span> The Representative is an independent contractor and
+        not an employee, partner, joint venturer, or general agent of the Company. Nothing in this
+        Agreement creates an employment relationship.</p>
+        <p><span class="sub">2.2 Taxes &amp; Benefits.</span> The Representative is solely responsible
+        for all income and self-employment taxes. The Representative will deliver a completed IRS
+        Form W-9, and the Company will issue IRS Form 1099 as required by law. The Representative is
+        not entitled to any employee benefits, withholding, workers&rsquo; compensation, or
+        unemployment coverage.</p>
+        <p><span class="sub">2.3 Expenses.</span> The Representative bears its own expenses unless
+        approved in advance in writing by the Company.</p>
+      </div>
+
+      <!-- 3 -->
+      <h2><span class="n">3.</span> Definitions</h2>
+      <div class="clause">
+        <ul>
+          <li><b>&ldquo;Qualified Attorney&rdquo;</b> &mdash; a Prospect, attributed to the
+          Representative through the Attribution Link, who (a) completes Caseway signup, (b) activates
+          a paid Caseway subscription, and (c) whose <b>first subscription payment is actually
+          collected and cleared</b> (by the Payment Collector on the Company&rsquo;s behalf). Free
+          signups that never subscribe, self-referrals, and duplicate or fraudulent accounts are
+          excluded.</li>
+          <li><b>&ldquo;Collected Revenue&rdquo;</b> &mdash; subscription fees actually received and
+          cleared from a Qualified Attorney by the Payment Collector on the Company&rsquo;s behalf,
+          net of any refunds, chargebacks, credits, discounts, and payment-processor reversals.</li>
+          <li><b>&ldquo;Commission Amount&rdquo;</b> &mdash; the one-time, per-attorney bounty
+          determined under the tier schedule in Section 4, based on the Representative&rsquo;s
+          cumulative, program-to-date count of Qualified Attorneys.</li>
+          <li><b>&ldquo;Attribution Link&rdquo;</b> &mdash; the personal Rewardful referral link
+          and/or coupon code issued to the Representative, through which sign-ups are credited.</li>
+          <li><b>&ldquo;Clawback Period&rdquo;</b> &mdash; the thirty (30) days following a Qualified
+          Attorney&rsquo;s first cleared payment.</li>
+        </ul>
+      </div>
+
+      <!-- 4 -->
+      <h2><span class="n">4.</span> Commission Structure</h2>
+      <div class="clause">
+        <p><span class="sub">4.1 Tiered Bounty.</span> For each Qualified Attorney, the Representative
+        earns a one-time Commission Amount per the schedule below. Rates are <b>marginal</b>: each
+        band&rsquo;s rate applies only to the Qualified Attorneys counted within that band. Bounties
+        are one-time per Qualified Attorney and are <b>not recurring</b>. Tier position is
+        program-to-date; once a tier is reached, that rate sticks for subsequent attorneys in the
+        band.</p>
+
+        <div class="tier">
+          <table>
+            <thead>
+              <tr>
+                <th>Qualified attorneys (cumulative)</th>
+                <th class="r">Commission Amount (per attorney)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1 &ndash; 25</td><td class="r"><span class="rate">$40</span></td></tr>
+              <tr><td>26 &ndash; 50</td><td class="r"><span class="rate">$48</span></td></tr>
+              <tr><td>51 &ndash; 75</td><td class="r"><span class="rate">$54</span></td></tr>
+              <tr><td>76 &ndash; 100</td><td class="r"><span class="rate">$58</span></td></tr>
+              <tr><td>101 &ndash; 150</td><td class="r"><span class="rate">$62</span></td></tr>
+              <tr><td>151 +</td><td class="r"><span class="rate">$65</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout">
+          <div class="lab">Core principle &mdash; paid only when we get paid</div>
+          <p>The Representative&rsquo;s right to a Commission Amount is funded solely out of, and
+          limited to, the <b>first Collected Revenue received from that Qualified Attorney</b>. The
+          Representative is entitled to the first dollars of Collected Revenue from a Qualified
+          Attorney, up to the applicable Commission Amount. No commission is earned, accrued, or
+          payable except to the extent the corresponding revenue has actually been collected &mdash;
+          the Representative is paid only when, and only because, the Company is paid. If the
+          corresponding revenue is never collected, no commission is owed; if Collected Revenue from
+          that attorney is less than the Commission Amount, the commission equals the amounts actually
+          collected as and when received, until the Commission Amount is reached.</p>
+          <p style="margin-top: 8px;">Because Caseway listings are billed <b>monthly</b> (for
+          example, the Founding rate of $10/mo), the Collected Revenue from a Qualified Attorney
+          arrives in successive monthly installments. The Commission Amount is therefore funded out
+          of, and collected and paid over, <b>multiple months &mdash; not a single month</b>. At the
+          $10/mo Founding rate, a $40 bounty funds over roughly <b>four months</b> of retained
+          payments. In each period the Representative receives the first dollars of that
+          attorney&rsquo;s Collected Revenue, up to the applicable Commission Amount, until the cap
+          is reached.</p>
+        </div>
+
+        <p><span class="sub">4.2 Illustrative Benchmark.</span> The schedule yields approximately
+        <b>$5,000 for every 100 Qualified Attorneys</b> (a $50 blended average), with the effective
+        rate rising toward $65 per attorney at higher volumes. This is a <b>cumulative, lifetime</b>
+        figure that accrues across the funding period as each attorney&rsquo;s monthly payments are
+        collected &mdash; it is <b>not a monthly or up-front amount</b>, and it depends on attorneys
+        being retained long enough for their Commission Amounts to fund in full. Figures are
+        illustrative only and do not guarantee any level of earnings.</p>
+      </div>
+
+      <!-- 5 -->
+      <h2><span class="n">5.</span> Tracking &amp; Payment</h2>
+      <div class="clause">
+        <p><span class="sub">5.1 Tracking via Rewardful.</span> Sign-ups are credited through the
+        Representative&rsquo;s Attribution Link; conversions and earnings appear in the
+        Representative&rsquo;s Rewardful dashboard. The Company&rsquo;s and Rewardful&rsquo;s records
+        are the controlling record of Qualified Attorneys, Collected Revenue, and commissions.</p>
+        <p><span class="sub">5.2 Payment Schedule.</span> Earned and payable commissions are paid
+        <b>monthly via Rewardful</b>, after (a) the corresponding Collected Revenue has been received
+        and (b) the applicable Clawback Period has cleared, subject to any payout minimums and
+        verification. Because a Commission Amount is funded out of the Qualified Attorney&rsquo;s
+        successive monthly subscription payments, it is paid <b>as that revenue is collected &mdash;
+        typically across several monthly cycles</b>, not as a single lump sum in the month the
+        attorney signs up. Each month the Representative receives the portion of the Commission
+        Amount funded by that month&rsquo;s Collected Revenue, until the cap is reached.</p>
+        <p><span class="sub">5.3 Statements.</span> The Representative is responsible for reviewing
+        its dashboard and notifying the Company of any discrepancy within thirty (30) days.</p>
+      </div>
+
+      <!-- 6 -->
+      <h2><span class="n">6.</span> Clawbacks &amp; Reversals</h2>
+      <div class="clause">
+        <p><span class="sub">6.1 30-Day Clawback.</span> If a Qualified Attorney cancels, refunds,
+        charges back, or otherwise fails to remain a paying listing within the Clawback Period, the
+        corresponding Commission Amount (or the collected portion paid) is reversed. Because the
+        Commission Amount funds over successive monthly payments, within the 30-day Clawback Period
+        typically <b>only the first month&rsquo;s collected slice</b> has actually been paid; the
+        remaining balance continues to be paid month by month as later payments clear, subject to the
+        clawback and offset rights in this Section.</p>
+        <p><span class="sub">6.2 Offsets.</span> The Company and/or Rewardful may offset reversed
+        amounts against current or future commissions. If commissions are insufficient to cover a
+        reversal, the Representative will repay the shortfall promptly on request.</p>
+        <p><span class="sub">6.3 No Commission on Reversed Revenue.</span> Commissions are never owed
+        on revenue the Company does not ultimately retain.</p>
+      </div>
+
+      <!-- 7 -->
+      <h2><span class="n">7.</span> Conduct &amp; Compliance</h2>
+      <div class="clause">
+        <p><span class="sub">7.1 Lawful Solicitation.</span> The Representative will comply with all
+        applicable laws, including anti-spam (e.g., CAN-SPAM), telemarketing (e.g., TCPA), and
+        advertising and consumer-protection laws, and will obtain all required consents.</p>
+        <p><span class="sub">7.2 Honest Representations.</span> The Representative will make only
+        accurate statements about Caseway, its pricing, and its benefits, and will not guarantee
+        results, case outcomes, or earnings, or make any unauthorized claim.</p>
+        <p><span class="sub">7.3 No Legal Advice.</span> The Representative is not acting as an
+        attorney, will not provide legal advice, and will not imply any attorney-client
+        relationship.</p>
+        <p><span class="sub">7.4 No Gaming.</span> Self-referrals, duplicate or fake accounts,
+        incentivized or fraudulent sign-ups, cookie-stuffing, and similar abuse are prohibited and
+        void the related commissions, and may result in immediate termination.</p>
+        <p><span class="sub">7.5 Brand Use.</span> The Representative will use only Company-approved
+        names, marks, and materials in accordance with the Company&rsquo;s guidelines and will cease
+        any use on request.</p>
+      </div>
+
+      <!-- 8 -->
+      <h2><span class="n">8.</span> Confidentiality</h2>
+      <div class="clause">
+        <p>The Representative will keep confidential all non-public Company information (including
+        pricing, prospect lists, methods, and data), use it only to perform under this Agreement, and
+        not disclose it. This obligation survives termination.</p>
+      </div>
+
+      <!-- 9 -->
+      <h2><span class="n">9.</span> Intellectual Property</h2>
+      <div class="clause">
+        <p>The Company owns the Caseway name, marks, content, and platform. During the Term, the
+        Company grants the Representative a limited, revocable, non-exclusive license to use approved
+        Caseway marks and materials solely for approved solicitation. No other rights are granted, and
+        all goodwill inures to the Company.</p>
+      </div>
+
+      <!-- 10 -->
+      <h2><span class="n">10.</span> Term &amp; Termination</h2>
+      <div class="clause">
+        <p><span class="sub">10.1 Term.</span> This Agreement begins on the Effective Date and
+        continues until terminated.</p>
+        <p><span class="sub">10.2 Termination.</span> Either Party may terminate at any time, with or
+        without cause, on 14 days&rsquo; written notice. The Company may
+        terminate immediately for breach, fraud, or legal risk.</p>
+        <p><span class="sub">10.3 Effect of Termination.</span> The Representative will stop
+        soliciting and using the Company&rsquo;s marks. For Qualified Attorneys converted before
+        termination, the Representative remains entitled to the unpaid portion of earned Commission
+        Amounts as and when the corresponding Collected Revenue is received and the Clawback Period
+        clears, subject to all clawback and offset rights. No commissions accrue for any sign-up
+        after termination.</p>
+        <p><span class="sub">10.4 Survival.</span> Sections 3, 6, 8, 9, 11, 12, and 13 survive
+        termination.</p>
+      </div>
+
+      <!-- 11 -->
+      <h2><span class="n">11.</span> Representations &amp; Warranties</h2>
+      <div class="clause">
+        <p>Each Party represents that it has full authority to enter into this Agreement. The
+        Representative further represents that it will comply with this Agreement and all applicable
+        laws and is not subject to any restriction that would prevent this engagement.</p>
+      </div>
+
+      <!-- 12 -->
+      <h2><span class="n">12.</span> Indemnification &amp; Liability</h2>
+      <div class="clause">
+        <p><span class="sub">12.1 Indemnification.</span> The Representative will indemnify and hold
+        the Company harmless from claims, losses, and expenses arising out of the
+        Representative&rsquo;s breach of this Agreement, misrepresentations, or unlawful conduct.</p>
+        <p><span class="sub">12.2 Limitation of Liability.</span> To the maximum extent permitted by
+        law, neither Party is liable for indirect, incidental, or consequential damages, and the
+        Company&rsquo;s aggregate liability is limited to the commissions paid or payable to the
+        Representative in the three (3) months preceding the claim.</p>
+      </div>
+
+      <!-- 13 -->
+      <h2><span class="n">13.</span> General</h2>
+      <div class="clause">
+        <p><span class="sub">13.1 Entire Agreement.</span> This Agreement is the entire agreement
+        between the Parties and supersedes all prior discussions and materials, including any
+        commission one-pager or marketing summary, which are illustrative only; this Agreement
+        controls.</p>
+        <p><span class="sub">13.2 Amendments.</span> The Company may update the commission schedule
+        on a prospective basis with reasonable notice; all other changes require a writing signed by
+        both Parties.</p>
+        <p><span class="sub">13.3 Assignment.</span> The Representative may not assign this Agreement
+        without the Company&rsquo;s consent; the Company may assign to an affiliate or successor.</p>
+        <p><span class="sub">13.4 Governing Law; Venue.</span> This Agreement is governed by the laws
+        of Wyoming, without regard to conflict-of-laws rules, and the Parties
+        consent to venue in the State of Wyoming.</p>
+        <p><span class="sub">13.5 Severability; Waiver.</span> If any provision is unenforceable, the
+        remainder stays in effect; no waiver is effective unless in writing.</p>
+        <p><span class="sub">13.6 Notices; Counterparts.</span> Notices are effective when sent to the
+        addresses below or on file. This Agreement may be executed in counterparts and by electronic
+        signature, each of which is an original.</p>
+      </div>
+
+      <!-- signatures -->
+      <div class="sigwrap">
+        <h2><span class="n">14.</span> Signatures</h2>
+        <div class="clause" style="padding-left: 27px;">
+          <p>The Parties execute this Agreement as of the Effective Date.</p>
+          <div class="siggrid">
+            <div class="sigblock">
+              <div class="role">The Company</div>
+              <div class="sigline"><span class="cap">Signature</span></div>
+              <div class="sigline"><span class="cap">Name &amp; title</span></div>
+              <div class="sigline"><span class="cap">Date</span></div>
+            </div>
+            <div class="sigblock">
+              <div class="role">The Representative</div>
+              <div class="sigline"><span class="cap">Signature</span></div>
+              <div class="sigline"><span class="cap">Printed name</span></div>
+              <div class="sigline"><span class="cap">Date &nbsp;·&nbsp; Email &nbsp;·&nbsp; Address</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <b>Caseway</b> — Find your way to the right attorney &nbsp;·&nbsp; Independent Sales
+        Representative Agreement. This document is a template provided for business convenience and
+        does not constitute legal or tax advice. The Company should have qualified counsel review and
+        adapt it before use, and complete all bracketed
+        <span class="ph" style="white-space: nowrap;">[placeholders]</span>.
+      </div>
+    </div>
+  </body>
+</html>

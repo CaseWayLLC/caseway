@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+  @page { size: 11in 8.5in; margin: 0; }
+  html, body { margin: 0; padding: 0; }
+  body { width: 11in; height: 8.5in; background: #f7f5f1; }
+  svg { display: block; width: 11in; height: 8.5in; }
+  .title { font-family: Georgia, 'Times New Roman', serif; }
+  .ui { font-family: Helvetica, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 1056 816" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="sh" x="-25%" y="-25%" width="150%" height="150%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1c1c1c" flood-opacity="0.10"/>
+    </filter>
+    <marker id="mEndN" markerWidth="10" markerHeight="8" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#16314e"/>
+    </marker>
+    <marker id="mStartN" markerWidth="10" markerHeight="8" refX="0" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M8,0 L0,3 L8,6 Z" fill="#16314e"/>
+    </marker>
+    <marker id="mEndG" markerWidth="10" markerHeight="8" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7a7f87"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1056" height="816" fill="#f7f5f1"/>
+
+  <!-- Header -->
+  <text class="title" x="528" y="48" text-anchor="middle" font-size="30" font-weight="bold" fill="#16314e">How casewayllc.com Works</text>
+  <text class="ui" x="528" y="74" text-anchor="middle" font-size="13.5" fill="#5b6470">How a visitor reaches your site — and the services working behind it</text>
+  <rect x="448" y="86" width="160" height="3" rx="1.5" fill="#c8a45c"/>
+
+  <!-- ============ EMAIL (top-left) ============ -->
+  <g>
+    <rect x="32" y="150" width="232" height="104" rx="11" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="32" y="150" width="6" height="104" rx="3" fill="#9aa0a8"/>
+    <text class="ui" x="52" y="178" font-size="14.5" font-weight="bold" fill="#14233a">Google Workspace</text>
+    <text class="ui" x="52" y="200" font-size="11.5" fill="#5b6470">Email: name@casewayllc.com</text>
+    <text class="ui" x="52" y="218" font-size="11.5" fill="#5b6470">MX &#8594; smtp.google.com</text>
+    <text class="ui" x="52" y="238" font-size="11" font-style="italic" fill="#8a909a">separate from the website</text>
+  </g>
+
+  <!-- ============ GITHUB (bottom-left) ============ -->
+  <g>
+    <rect x="32" y="450" width="232" height="92" rx="11" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="32" y="450" width="6" height="92" rx="3" fill="#9aa0a8"/>
+    <text class="ui" x="52" y="478" font-size="14.5" font-weight="bold" fill="#14233a">GitHub &#8212; Code</text>
+    <text class="ui" x="52" y="500" font-size="11.5" fill="#5b6470">stores your source code</text>
+    <text class="ui" x="52" y="520" font-size="11" font-style="italic" fill="#8a909a">used only when deploying</text>
+  </g>
+
+  <!-- ============ PEOPLE (center top) ============ -->
+  <g>
+    <rect x="408" y="96" width="240" height="56" rx="11" fill="#16314e" filter="url(#sh)"/>
+    <text class="ui" x="528" y="122" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">Visitors &amp; Attorneys</text>
+    <text class="ui" x="528" y="140" text-anchor="middle" font-size="11.5" fill="#cdd6e0">open your site in a browser</text>
+  </g>
+
+  <!-- ============ DNS (center) ============ -->
+  <g>
+    <rect x="398" y="206" width="260" height="96" rx="11" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="398" y="206" width="6" height="96" rx="3" fill="#c8a45c"/>
+    <text class="ui" x="418" y="230" font-size="14.5" font-weight="bold" fill="#14233a">DNS &#8212; Squarespace</text>
+    <text class="ui" x="418" y="252" font-size="11.5" fill="#5b6470">A&#160;&#160;&#160;@&#160;&#160;&#160;&#160;&#8594; 34.111.179.208</text>
+    <text class="ui" x="418" y="270" font-size="11.5" fill="#5b6470">A&#160;&#160;&#160;www&#160;&#8594; 34.111.179.208</text>
+    <text class="ui" x="418" y="290" font-size="11" font-style="italic" fill="#8a909a">points your name to Replit</text>
+  </g>
+
+  <!-- ============ REPLIT (center) ============ -->
+  <g>
+    <rect x="388" y="360" width="280" height="176" rx="12" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="388" y="360" width="6" height="176" rx="3" fill="#16314e"/>
+    <text class="ui" x="408" y="386" font-size="15" font-weight="bold" fill="#14233a">Replit &#8212; Live Hosting</text>
+    <text class="ui" x="408" y="404" font-size="10.5" fill="#8a909a">case-way-llc.replit.app &#183; HTTPS &#183; auto-scaling</text>
+    <rect x="406" y="416" width="244" height="44" rx="8" fill="#f3f0ea" stroke="#e3ddd2" stroke-width="1"/>
+    <text class="ui" x="528" y="443" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#16314e">Web App (what people see)</text>
+    <rect x="406" y="470" width="244" height="44" rx="8" fill="#f3f0ea" stroke="#e3ddd2" stroke-width="1"/>
+    <text class="ui" x="528" y="497" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#16314e">API Server (the logic)</text>
+  </g>
+
+  <!-- ============ SUPABASE (right) ============ -->
+  <g>
+    <rect x="772" y="372" width="252" height="100" rx="11" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="772" y="372" width="6" height="100" rx="3" fill="#c8a45c"/>
+    <text class="ui" x="792" y="398" font-size="14.5" font-weight="bold" fill="#14233a">Supabase &#8212; Your Data</text>
+    <text class="ui" x="792" y="420" font-size="11.5" fill="#5b6470">attorney profiles (database)</text>
+    <text class="ui" x="792" y="438" font-size="11.5" fill="#5b6470">photos &amp; attorney sign-in</text>
+    <text class="ui" x="792" y="458" font-size="11" font-style="italic" fill="#8a909a">single source of truth</text>
+  </g>
+
+  <!-- ============ STRIPE (right) ============ -->
+  <g>
+    <rect x="772" y="496" width="252" height="104" rx="11" fill="#ffffff" stroke="#e3ddd2" stroke-width="1.5" filter="url(#sh)"/>
+    <rect x="772" y="496" width="6" height="104" rx="3" fill="#c8a45c"/>
+    <text class="ui" x="792" y="522" font-size="14.5" font-weight="bold" fill="#14233a">Stripe &#8212; Payments</text>
+    <text class="ui" x="792" y="544" font-size="11.5" fill="#5b6470">subscriptions (TEST mode)</text>
+    <text class="ui" x="792" y="562" font-size="11.5" fill="#5b6470">Founding $10 &#183; Basic $100</text>
+    <text class="ui" x="792" y="582" font-size="11.5" fill="#5b6470">Pro $250 upgrade</text>
+  </g>
+
+  <!-- ============ ARROWS: web traffic (solid navy) ============ -->
+  <line x1="528" y1="152" x2="528" y2="203" stroke="#16314e" stroke-width="2" marker-end="url(#mEndN)"/>
+  <text class="ui" x="540" y="182" font-size="11" fill="#16314e">type the address</text>
+
+  <line x1="528" y1="302" x2="528" y2="357" stroke="#16314e" stroke-width="2" marker-end="url(#mEndN)"/>
+  <text class="ui" x="540" y="332" font-size="11" fill="#16314e">resolves to Replit (HTTPS)</text>
+
+  <!-- API <-> Supabase -->
+  <line x1="668" y1="484" x2="769" y2="432" stroke="#16314e" stroke-width="2" marker-start="url(#mStartN)" marker-end="url(#mEndN)"/>
+  <text class="ui" x="690" y="448" font-size="10.5" fill="#16314e">profiles &#183; photos &#183; login</text>
+
+  <!-- API <-> Stripe -->
+  <line x1="668" y1="500" x2="769" y2="542" stroke="#16314e" stroke-width="2" marker-start="url(#mStartN)" marker-end="url(#mEndN)"/>
+  <text class="ui" x="690" y="528" font-size="10.5" fill="#16314e">payments</text>
+
+  <!-- ============ ARROWS: email (dashed gray) ============ -->
+  <line x1="264" y1="205" x2="395" y2="250" stroke="#7a7f87" stroke-width="2" stroke-dasharray="7,5" marker-end="url(#mEndG)"/>
+  <text class="ui" x="330" y="212" text-anchor="middle" font-size="10.5" fill="#7a7f87">email (MX)</text>
+
+  <!-- ============ ARROWS: code (dotted gray) ============ -->
+  <line x1="264" y1="492" x2="385" y2="472" stroke="#7a7f87" stroke-width="2" stroke-dasharray="1.5,4" stroke-linecap="round" marker-end="url(#mEndG)"/>
+  <text class="ui" x="322" y="470" text-anchor="middle" font-size="10.5" fill="#7a7f87">deploy</text>
+
+  <!-- ============ LEGEND ============ -->
+  <g>
+    <line x1="300" y1="660" x2="346" y2="660" stroke="#16314e" stroke-width="2.5"/>
+    <text class="ui" x="354" y="664" font-size="11.5" fill="#5b6470">Website traffic</text>
+
+    <line x1="472" y1="660" x2="518" y2="660" stroke="#7a7f87" stroke-width="2.5" stroke-dasharray="7,5"/>
+    <text class="ui" x="526" y="664" font-size="11.5" fill="#5b6470">Email (separate)</text>
+
+    <line x1="664" y1="660" x2="710" y2="660" stroke="#7a7f87" stroke-width="2.5" stroke-dasharray="1.5,4" stroke-linecap="round"/>
+    <text class="ui" x="718" y="664" font-size="11.5" fill="#5b6470">Code deployment</text>
+  </g>
+
+  <text class="ui" x="528" y="712" text-anchor="middle" font-size="11.5" font-style="italic" fill="#8a909a">casewayllc.com is live. Remaining: finish "www" and connect live Stripe payments.</text>
+</svg>
+</body>
+</html>

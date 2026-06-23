@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Caseway — Founding Attorney Invitation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: hsl(153 30% 11%);
+        --green: hsl(150 41% 22%);
+        --green-d: hsl(150 41% 13%);
+        --gold: hsl(40 56% 49%);
+        --gold-d: hsl(40 60% 40%);
+        --cream: hsl(40 24% 98%);
+        --muted: hsl(150 7% 40%);
+        --line: hsl(40 12% 87%);
+        --accent: hsl(40 42% 94%);
+        --green-tint: hsl(150 20% 94%);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      @page {
+        size: Letter;
+        margin: 0;
+      }
+
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .page {
+        width: 8.5in;
+        height: 11in;
+        padding: 0.66in 0.72in 0.5in;
+        background: var(--cream);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        page-break-after: always;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+
+      /* ---------- letterhead ---------- */
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        position: relative;
+        z-index: 2;
+      }
+      .brand img {
+        width: 38px;
+        height: 38px;
+      }
+      .brand .name {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 23px;
+        letter-spacing: -0.01em;
+        color: var(--ink);
+      }
+      .brand .kicker {
+        margin-left: auto;
+        font-size: 9.5px;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .hr {
+        height: 1px;
+        background: var(--line);
+        margin: 16px 0 0;
+        position: relative;
+      }
+      .hr::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 84px;
+        height: 3px;
+        margin-top: -1px;
+        background: var(--gold);
+      }
+
+      .eyebrow {
+        font-size: 10.5px;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--gold-d);
+      }
+
+      h1 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 40px;
+        line-height: 1.04;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+      }
+      h1 .accent {
+        color: var(--green);
+        font-style: italic;
+      }
+
+      .lead {
+        font-size: 13.5px;
+        line-height: 1.62;
+        color: var(--muted);
+        max-width: 6.1in;
+      }
+
+      .section-label {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--green);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .section-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--line);
+      }
+
+      /* ---------- pillars ---------- */
+      .pillars {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+      .pillar .num {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 22px;
+        color: var(--gold-d);
+        line-height: 1;
+      }
+      .pillar .ttl {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: var(--ink);
+        margin: 10px 0 5px;
+      }
+      .pillar .txt {
+        font-size: 11.5px;
+        line-height: 1.55;
+        color: var(--muted);
+      }
+      .pillar .bar {
+        width: 26px;
+        height: 2px;
+        background: var(--gold);
+        margin-top: 11px;
+      }
+
+      /* ---------- quote band ---------- */
+      .quote {
+        background: var(--green);
+        color: hsl(42 30% 95%);
+        border-radius: 14px;
+        padding: 26px 30px;
+        position: relative;
+        overflow: hidden;
+      }
+      .quote .mark {
+        font-family: "Fraunces", serif;
+        font-size: 17px;
+        line-height: 1.45;
+        font-weight: 500;
+      }
+      .quote .mark b {
+        color: hsl(40 60% 64%);
+        font-weight: 600;
+      }
+      .quote .by {
+        margin-top: 12px;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: hsl(42 25% 78%);
+      }
+
+      .spacer {
+        flex: 1;
+      }
+
+      .foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+      }
+      .foot b {
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      /* ---------- steps ---------- */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .step {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px 16px;
+      }
+      .step .n {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--green-tint);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .step .h {
+        font-size: 12.5px;
+        font-weight: 600;
+        margin: 12px 0 5px;
+        color: var(--ink);
+      }
+      .step .p {
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      /* ---------- AEO feature ---------- */
+      .feature {
+        background: var(--green-d);
+        border-radius: 14px;
+        padding: 24px 28px;
+        color: hsl(42 30% 95%);
+        position: relative;
+        overflow: hidden;
+      }
+      .feature::after {
+        content: "";
+        position: absolute;
+        right: -1.4in;
+        bottom: -1.6in;
+        width: 3.2in;
+        height: 3.2in;
+        background: radial-gradient(
+          circle at center,
+          hsl(40 60% 55% / 0.22),
+          transparent 60%
+        );
+      }
+      .feature .lab {
+        font-size: 10px;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: hsl(40 60% 64%);
+      }
+      .feature h3 {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 22px;
+        margin: 8px 0 9px;
+        letter-spacing: -0.01em;
+      }
+      .feature p {
+        font-size: 12px;
+        line-height: 1.6;
+        color: hsl(42 22% 86%);
+        max-width: 5.9in;
+        position: relative;
+        z-index: 2;
+      }
+      .tags {
+        display: flex;
+        gap: 8px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+      .tags span {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 5px 11px;
+        border: 1px solid hsl(40 40% 70% / 0.4);
+        border-radius: 999px;
+        color: hsl(42 28% 88%);
+      }
+
+      /* ---------- founding offer strip (p1) ---------- */
+      .founding {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        border: 1.5px solid var(--gold);
+        background: hsl(40 52% 95%);
+        border-radius: 12px;
+        padding: 16px 22px;
+      }
+      .founding .ftag {
+        font-family: "Fraunces", serif;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        color: var(--gold-d);
+        white-space: nowrap;
+      }
+      .founding .fdiv {
+        width: 1px;
+        align-self: stretch;
+        background: var(--gold);
+        opacity: 0.45;
+      }
+      .founding .ftxt {
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: var(--ink);
+      }
+      .founding .ftxt b {
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      /* ---------- pricing (p2) ---------- */
+      .fhero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        background: linear-gradient(100deg, var(--green), var(--green-d));
+        color: hsl(42 30% 95%);
+        border-radius: 13px;
+        padding: 18px 24px;
+      }
+      .fhero .lab {
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: hsl(40 62% 66%);
+      }
+      .fhero .big {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 1;
+        margin-top: 6px;
+      }
+      .fhero .big span {
+        font-family: "Inter", sans-serif;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: hsl(42 22% 84%);
+      }
+      .fhero-sub {
+        font-size: 11.5px;
+        line-height: 1.5;
+        color: hsl(42 22% 86%);
+        max-width: 3.1in;
+        text-align: right;
+      }
+      .fhero-sub b {
+        color: hsl(40 62% 66%);
+        font-weight: 600;
+      }
+      .std {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 14px;
+      }
+      .scard {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 16px 18px;
+        background: #fff;
+      }
+      .scard.pro {
+        border: 1.5px solid var(--green);
+        background: linear-gradient(180deg, var(--green-tint), #fff 55%);
+      }
+      .scard .sname {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .scard.pro .sname {
+        color: var(--green);
+      }
+      .scard .samt {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 26px;
+        color: var(--ink);
+        margin: 4px 0 8px;
+        line-height: 1;
+      }
+      .scard .samt span {
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--muted);
+      }
+      .scard .sdesc {
+        font-size: 11px;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+
+      /* ---------- CTA ---------- */
+      .cta {
+        background: var(--green);
+        border-radius: 14px;
+        padding: 22px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+      }
+      .cta .l .t {
+        font-family: "Fraunces", serif;
+        font-weight: 600;
+        font-size: 19px;
+        color: hsl(42 30% 96%);
+        letter-spacing: -0.01em;
+      }
+      .cta .l .s {
+        font-size: 11.5px;
+        color: hsl(42 22% 82%);
+        margin-top: 3px;
+      }
+      .cta .url {
+        flex-shrink: 0;
+        background: hsl(40 56% 55%);
+        color: hsl(150 41% 12%);
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        padding: 13px 22px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===================== PAGE 1 ===================== -->
+    <section class="page">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Caseway" />
+        <span class="name">Caseway</span>
+        <span class="kicker">An invitation to founding attorneys</span>
+      </div>
+      <div class="hr"></div>
+
+      <div style="margin-top: 30px">
+        <div class="eyebrow">Get found first — and lock in the founding rate</div>
+        <h1 style="margin-top: 14px">
+          Be the attorney<br />clients <span class="accent">find first.</span>
+        </h1>
+        <p class="lead" style="margin-top: 18px">
+          Caseway is a modern directory where clients find the right lawyer for
+          their case — whether you are an independent attorney or a firm listing
+          your whole team. Big firms win clients by outspending everyone on
+          marketing. Caseway lets you be found instead — an investment in your
+          own practice, not a bidding war you can't win.
+        </p>
+      </div>
+
+      <div style="margin-top: 34px">
+        <div class="section-label">Why list now</div>
+        <div class="pillars" style="margin-top: 20px">
+          <div class="pillar">
+            <div class="num">01</div>
+            <div class="ttl">Out-market the big firms</div>
+            <div class="txt">
+              Large firms win clients by outspending everyone on advertising.
+              Caseway levels the field — get found by the people searching in
+              your area, without a marketing budget to match theirs.
+            </div>
+            <div class="bar"></div>
+          </div>
+          <div class="pillar">
+            <div class="num">02</div>
+            <div class="ttl">Built for search &amp; AI</div>
+            <div class="txt">
+              We invest in SEO and AEO so when people search for a lawyer — on
+              Google, or by asking AI assistants like ChatGPT and Perplexity —
+              Caseway and your profile are what they find.
+            </div>
+            <div class="bar"></div>
+          </div>
+          <div class="pillar">
+            <div class="num">03</div>
+            <div class="ttl">Lock in $10 — forever</div>
+            <div class="txt">
+              Be one of the first 10,000 attorneys and lock in $10/month for
+              your first post. The rate never rises, for as long as you stay —
+              standard pricing is $100/month.
+            </div>
+            <div class="bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="founding" style="margin-top: 30px">
+        <div class="ftag">Founding<br />offer</div>
+        <div class="fdiv"></div>
+        <div class="ftxt">
+          The first <b>10,000 attorneys</b> lock in <b>$10/month</b> for their
+          first post — a rate that stays, forever. Standard pricing is
+          $100/month, or $250/month for a Caseway Pro post.
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="quote">
+        <div class="mark">
+          We are building the <b>search engine of the future</b> for finding a
+          lawyer — the place clients and AI assistants turn to first. The
+          attorneys who join early are the ones it recommends.
+        </div>
+        <div class="by">Caseway · Find your way to the right attorney</div>
+      </div>
+
+      <div class="foot">
+        <span>caseway.us</span>
+        <span><b>Caseway</b> — for attorneys &amp; law firms</span>
+      </div>
+    </section>
+
+    <!-- ===================== PAGE 2 ===================== -->
+    <section class="page">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Caseway" />
+        <span class="name">Caseway</span>
+        <span class="kicker">How it works &amp; pricing</span>
+      </div>
+      <div class="hr"></div>
+
+      <div style="margin-top: 26px">
+        <div class="section-label">How Caseway works</div>
+        <div class="steps" style="margin-top: 18px">
+          <div class="step">
+            <div class="n">1</div>
+            <div class="h">Clients tell us their need</div>
+            <div class="p">
+              A few plain-language questions about the legal help they are
+              looking for — no jargon, no friction.
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">2</div>
+            <div class="h">They browse the map</div>
+            <div class="p">
+              Matching attorneys appear on an interactive map with full
+              profiles: practice areas, experience, and fees.
+            </div>
+          </div>
+          <div class="step">
+            <div class="n">3</div>
+            <div class="h">They book with you</div>
+            <div class="p">
+              Clients request a free consultation with you directly — warm
+              leads, already looking for what you do.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature" style="margin-top: 26px">
+        <div class="lab">SEO &amp; AEO · the search engine of the future</div>
+        <h3>When someone asks for a lawyer, we make the answer you.</h3>
+        <p>
+          Old directories wait to be found. Caseway is engineered to surface in
+          modern search — structured so Google and AI answer engines can read,
+          trust, and recommend your practice. As more people ask AI assistants
+          "who is a good lawyer near me," we work every day to make sure your
+          name is in the answer.
+        </p>
+        <div class="tags">
+          <span>Google search</span>
+          <span>AI answer engines</span>
+          <span>Structured profiles</span>
+          <span>Local discovery</span>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px">
+        <div class="section-label">Pricing</div>
+
+        <div class="fhero" style="margin-top: 16px">
+          <div>
+            <div class="lab">Founding rate · first 10,000 attorneys</div>
+            <div class="big">$10<span> / month — locked forever</span></div>
+          </div>
+          <div class="fhero-sub">
+            Lock in $10/month for your first post. The rate never rises, for as
+            long as you stay. <b>Standard rate $100/month.</b>
+          </div>
+        </div>
+
+        <div class="std">
+          <div class="scard">
+            <div class="sname">Basic post</div>
+            <div class="samt">$100<span> / month</span></div>
+            <div class="sdesc">
+              Map placement, a full profile (practice areas, experience,
+              languages, fees), client-booked consultations, and full directory
+              search visibility.
+            </div>
+          </div>
+          <div class="scard pro">
+            <div class="sname">Caseway Pro post</div>
+            <div class="samt">$250<span> / month</span></div>
+            <div class="sdesc">
+              Everything in a Basic post, plus ranking above other listings,
+              priority visibility as the directory grows, and the Pro
+              credibility marker.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="cta">
+        <div class="l">
+          <div class="t">Claim your founding rate.</div>
+          <div class="s">
+            Lock in $10/month for your first post — before the first 10,000
+            spots are gone.
+          </div>
+        </div>
+        <div class="url">caseway.us</div>
+      </div>
+
+      <div class="foot">
+        <span>caseway.us</span>
+        <span><b>Caseway</b> — Find your way to the right attorney</span>
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+# Caseway — attorney directory and discovery platform
+# https://caseway.us
+# Answer engines and AI crawlers (GPTBot, PerplexityBot, ClaudeBot, Google-Extended, etc.)
+# are intentionally welcome. Public content is open; private/auth pages are excluded.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /sign-in
+Disallow: /sign-up
+Disallow: /signup
+Disallow: /listing/
+Disallow: /saved
+
+Sitemap: https://caseway.us/api/sitemap.xml

@@ -1,0 +1,76 @@
+Build a modern, clean, minimal web app called "SoloMatch" — a Zillow-style platform for finding solo attorneys.
+
+Use this tech stack:
+- Next.js (App Router)
+- Tailwind CSS
+- Leaflet for the map
+- React state (useState) for storing data (demo version - no Supabase or database yet)
+
+Core Features:
+
+1. Client Flow:
+   - Start with location selection
+   - Then 2–3 simple multiple-choice questions in plain language
+   - After answering, show a map with pins at attorney office locations + a list of attorney cards
+   - Clicking a pin or card opens a clean attorney profile that slides in from the right
+
+2. Sliding Attorney Profile Panel:
+   - Photo, name, firm, title, years of experience
+   - Practice areas
+   - Short bio
+   - Big "Book Free Consultation" button (opens Calendly or shows a modal)
+   - "Similar Lawyers" section with 3–4 small cards
+
+3. Attorney Signup Form (Demo Version):
+   Create a working signup form where new attorneys can be added. Use these fields:
+
+   **Required Fields:**
+   - Full Name
+   - Firm Name
+   - Title / Position
+   - Profile Photo (use URL input for demo)
+   - Phone Number
+   - Email Address
+   - Professional Bio
+   - Years of Experience
+   - Practice Areas (checkboxes)
+   - Jurisdictions
+   - Office Address (full address like Google Maps)
+   - Latitude
+   - Longitude
+   - Calendly URL
+   - Fee Type
+   - Offers Free Consultation (Yes/No)
+   - Video Conferencing Available (Yes/No)
+   - Languages Spoken
+
+   **Optional Field:**
+   - Website URL
+
+   When the form is submitted, the new attorney should appear on the map with a pin at their latitude/longitude and also show in the list.
+
+4. Map:
+   - Use Leaflet to display pins at each attorney's office location (using latitude and longitude)
+   - Clicking a pin should open the sliding attorney profile
+
+Detailed Practice Areas (for checkboxes):
+
+- Family / Relationships → Divorce, Child Custody, Child Support, Alimony, Domestic Violence, Adoption
+- Car Accidents & Injuries → Car Accidents, Truck Accidents, Motorcycle Accidents, Uber/Lyft Accidents, Wrongful Death
+- Other Accidents & Injuries → Slip and Fall, Dog Bites, Construction Accidents, Premises Liability, Product Liability
+- Medical / Hospital Issues → Medical Malpractice, Birth Injury, Surgical Errors, Misdiagnosis, Nursing Home Abuse, Hospital Bills
+- Money, Business & Contracts → Business Disputes, Contract Disputes, Debt Collection, Bankruptcy, Partnership Disputes
+- Home, Property & Neighbors → Landlord-Tenant, Buying/Selling Home, Foreclosure, Property Damage, Neighbor Disputes
+- Job / Workplace → Wrongful Termination, Discrimination, Unpaid Wages, Harassment, Employment Contracts
+- Criminal / Police Trouble → DUI, Criminal Defense, Traffic Tickets, Assault, Drug Charges, Police Misconduct
+- Estate Planning → Wills, Trusts, Probate, Power of Attorney, Guardianship
+- Immigration → Green Cards, Citizenship, Deportation Defense, Visas, Asylum
+
+Design:
+- Clean, modern, minimal, and trustworthy
+- Good spacing and smooth animations for the sliding panel
+
+Start by creating the full project with:
+- The map using Leaflet with pins based on latitude/longitude
+- Client flow (location → questions → map with pins → sliding panel)
+- A fully working attorney signup form using local React state
